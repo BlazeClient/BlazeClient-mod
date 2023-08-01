@@ -2,9 +2,16 @@ plugins {
 	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id "com.github.johnrengelman.shadow" version "8.1.1"
 	id "io.freefair.lombok" version "8.0.1"
+	id 'me.qoomon.git-versioning' version '6.4.2'
 }
 
-version = '1.0.0'
+version = '${commit.short}'
+gitVersioning.apply {
+	rev {
+		version = '${commit.short}'
+	}
+}
+
 group = project.maven_group
 evaluationDependsOn(':shared')
 
