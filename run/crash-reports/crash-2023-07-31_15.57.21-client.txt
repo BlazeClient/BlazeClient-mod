@@ -1,0 +1,125 @@
+---- Minecraft Crash Report ----
+// This doesn't make any sense!
+
+Time: 2023-07-31 15:57:21
+Description: Initializing game
+
+java.lang.NullPointerException: Cannot invoke "me.nobokik.blazeclient.mod.ModManager.getMod(java.lang.Class)" because the return value of "me.nobokik.blazeclient.Client.modManager()" is null
+	at net.minecraft.client.render.OverlayTexture.constant$zdi000$blaze-client$customHitColor(OverlayTexture.java:516)
+	at net.minecraft.client.render.OverlayTexture.<init>(OverlayTexture.java:31)
+	at net.minecraft.client.render.GameRenderer.<init>(GameRenderer.java:127)
+	at net.minecraft.client.MinecraftClient.<init>(MinecraftClient.java:589)
+	at net.minecraft.client.main.Main.main(Main.java:198)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:468)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:74)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at net.minecraft.client.render.OverlayTexture.constant$zdi000$blaze-client$customHitColor(OverlayTexture.java:516)
+	at net.minecraft.client.render.OverlayTexture.<init>(OverlayTexture.java:31)
+	at net.minecraft.client.render.GameRenderer.<init>(GameRenderer.java:127)
+	at net.minecraft.client.MinecraftClient.<init>(MinecraftClient.java:589)
+
+-- Initialization --
+Details:
+	Modules: 
+Stacktrace:
+	at net.minecraft.client.main.Main.main(Main.java:198)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:468)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:74)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.19.4
+	Minecraft Version ID: 1.19.4
+	Operating System: Linux (amd64) version 5.18.0-259-tkg-bmq
+	Java Version: 17.0.5, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 358226344 bytes (341 MiB) / 658505728 bytes (628 MiB) up to 4198498304 bytes (4004 MiB)
+	CPUs: 12
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 5 1600 Six-Core Processor
+	Identifier: AuthenticAMD Family 23 Model 8 Stepping 2
+	Microarchitecture: Zen+
+	Frequency (GHz): -0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 6
+	Number of logical CPUs: 12
+	Graphics card #0 name: GP107 [GeForce GTX 1050 Ti]
+	Graphics card #0 vendor: NVIDIA Corporation (0x10de)
+	Graphics card #0 VRAM (MB): 288.00
+	Graphics card #0 deviceId: 0x1c82
+	Graphics card #0 versionInfo: unknown
+	Virtual memory max (MB): 16196.23
+	Virtual memory used (MB): 9293.39
+	Swap memory total (MB): 8192.00
+	Swap memory used (MB): 0.00
+	JVM Flags: 0 total; 
+	Fabric Mods: 
+		blaze-client: Blaze Client 0.8.1
+		fabric-api: Fabric API 0.86.0+1.19.4
+		fabric-api-base: Fabric API Base 0.4.28+737a6ee8f4
+		fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 1.6.29+504944c8f4
+		fabric-biome-api-v1: Fabric Biome API (v1) 13.0.9+10ce000ff4
+		fabric-block-api-v1: Fabric Block API (v1) 1.0.8+e022e5d1f4
+		fabric-blockrenderlayer-v1: Fabric BlockRenderLayer Registration (v1) 1.1.38+10ce000ff4
+		fabric-client-tags-api-v1: Fabric Client Tags 1.1.1+0eee1254f4
+		fabric-command-api-v2: Fabric Command API (v2) 2.2.10+10ce000ff4
+		fabric-content-registries-v0: Fabric Content Registries (v0) 3.5.14+10ce000ff4
+		fabric-convention-tags-v1: Fabric Convention Tags 1.5.3+6d727b51f4
+		fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 0.2.17+aeb40ebef4
+		fabric-data-generation-api-v1: Fabric Data Generation API (v1) 11.5.0+1b5f819af4
+		fabric-dimensions-v1: Fabric Dimensions API (v1) 2.1.49+10ce000ff4
+		fabric-entity-events-v1: Fabric Entity Events (v1) 1.5.17+10ce000ff4
+		fabric-events-interaction-v0: Fabric Events Interaction (v0) 0.6.1+4b6b93f0f4
+		fabric-game-rule-api-v1: Fabric Game Rule API (v1) 1.0.35+a1ccd7bff4
+		fabric-gametest-api-v1: Fabric Game Test API (v1) 1.2.9+10ce000ff4
+		fabric-item-api-v1: Fabric Item API (v1) 2.1.21+10ce000ff4
+		fabric-item-group-api-v1: Fabric Item Group API (v1) 3.0.10+8400c67ef4
+		fabric-key-binding-api-v1: Fabric Key Binding API (v1) 1.0.35+504944c8f4
+		fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 2.2.19+10ce000ff4
+		fabric-loot-api-v2: Fabric Loot API (v2) 1.1.32+10ce000ff4
+		fabric-message-api-v1: Fabric Message API (v1) 5.1.5+53c11dadf4
+		fabric-mining-level-api-v1: Fabric Mining Level API (v1) 2.1.44+10ce000ff4
+		fabric-model-loading-api-v1: Fabric Model Loading API (v1) 1.0.1+a0255436f4
+		fabric-networking-api-v1: Fabric Networking API (v1) 1.3.5+10ce000ff4
+		fabric-object-builder-api-v1: Fabric Object Builder API (v1) 7.1.1+d63b52eaf4
+		fabric-particles-v1: Fabric Particles (v1) 1.1.1+86d48884f4
+		fabric-recipe-api-v1: Fabric Recipe API (v1) 1.0.12+10ce000ff4
+		fabric-registry-sync-v0: Fabric Registry Sync (v0) 2.3.0+2c56a82af4
+		fabric-renderer-api-v1: Fabric Renderer API (v1) 2.4.1+a0255436f4
+		fabric-renderer-indigo: Fabric Renderer - Indigo 1.4.1+07902599f4
+		fabric-rendering-data-attachment-v1: Fabric Rendering Data Attachment (v1) 0.3.32+10ce000ff4
+		fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 3.0.25+10ce000ff4
+		fabric-rendering-v1: Fabric Rendering (v1) 2.1.5+10ce000ff4
+		fabric-resource-conditions-api-v1: Fabric Resource Conditions API (v1) 2.3.3+10ce000ff4
+		fabric-resource-loader-v0: Fabric Resource Loader (v0) 0.11.7+8400c67ef4
+		fabric-screen-api-v1: Fabric Screen API (v1) 1.0.49+10ce000ff4
+		fabric-screen-handler-api-v1: Fabric Screen Handler API (v1) 1.3.24+10ce000ff4
+		fabric-sound-api-v1: Fabric Sound API (v1) 1.0.11+10ce000ff4
+		fabric-transfer-api-v1: Fabric Transfer API (v1) 3.3.0+7bf81db9f4
+		fabric-transitive-access-wideners-v1: Fabric Transitive Access Wideners (v1) 3.3.0+1b5f819af4
+		fabricloader: Fabric Loader 0.14.21
+		java: OpenJDK 64-Bit Server VM 17
+		lazydfu: LazyDFU 0.1.3
+		minecraft: Minecraft 1.19.4
+		modmenu: Mod Menu 6.3.1
+	Launched Version: Fabric
+	Backend library: LWJGL version 3.3.1 SNAPSHOT
+	Backend API: NVIDIA GeForce GTX 1050 Ti/PCIe/SSE2 GL version 3.2.0 NVIDIA 510.73.05, NVIDIA Corporation
+	Window size: <not initialized>
+	GL Caps: Using framebuffer using OpenGL 3.2
+	GL debug messages: 
+	Using VBOs: Yes
+	Is Modded: Definitely; Client brand changed to 'Blaze Client'
+	Type: Client (map_client.txt)
+	CPU: 12x AMD Ryzen 5 1600 Six-Core Processor

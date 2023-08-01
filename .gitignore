@@ -1,0 +1,6 @@
+# Project exclude paths
+/.gradle/
+/1.19.4/.gradle/
+/1.19.4/build/
+/build/
+/shared/build/
