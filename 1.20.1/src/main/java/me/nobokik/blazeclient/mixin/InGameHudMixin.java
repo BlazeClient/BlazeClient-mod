@@ -9,7 +9,7 @@ import me.nobokik.blazeclient.mod.mods.CrosshairMod;
 import me.nobokik.blazeclient.mod.mods.PotionMod;
 import me.nobokik.blazeclient.mod.mods.ScoreboardMod;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.client.option.GameOptions;
@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,7 +40,7 @@ public class InGameHudMixin {
     }
 
     @Shadow
-    private void renderHotbarItem(MatrixStack matrixStack, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k) {
+    private void renderHotbarItem(DrawContext drawContext, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k) {
 
     }
 
@@ -47,11 +48,11 @@ public class InGameHudMixin {
             method = "renderHotbar",
             at = @At("TAIL")
     )
-    private void armorhud$injectArmorHUD(float tickDelta, MatrixStack matrices, CallbackInfo ci) {
-        if (Client.modManager().getMod(ArmorMod.class).isEnabled()) this.armorhud$renderArmorHUD(tickDelta, matrices);
+    private void armorhud$injectArmorHUD(float f, DrawContext drawContext, CallbackInfo ci) {
+        if (Client.modManager().getMod(ArmorMod.class).isEnabled()) this.armorhud$renderArmorHUD(f, drawContext);
     }
 
-    private void armorhud$renderArmorHUD(float tickDelta, MatrixStack matrices) {
+    private void armorhud$renderArmorHUD(float tickDelta, DrawContext drawContext) {
         ArmorMod mod = Client.modManager().getMod(ArmorMod.class);
 
         PlayerEntity player = this.getCameraPlayer();
@@ -61,19 +62,19 @@ public class InGameHudMixin {
         RenderSystem.defaultBlendFunc();
         if(mod.direction.getMode().equals("Vertical")) {
             for (int i = 0; i < 4; i++) {
-                this.renderHotbarItem(matrices, xPos + 3, yPos + 16 * i, tickDelta, player, player.getInventory().armor.get(3 - i), 1);
+                this.renderHotbarItem(drawContext, xPos + 3, yPos + 16 * i, tickDelta, player, player.getInventory().armor.get(3 - i), 1);
             }
         } else {
             for (int i = 0; i < 4; i++) {
-                this.renderHotbarItem(matrices, xPos +  16 * i, yPos + 3, tickDelta, player, player.getInventory().armor.get(3 - i), 1);
+                this.renderHotbarItem(drawContext, xPos +  16 * i, yPos + 3, tickDelta, player, player.getInventory().armor.get(3 - i), 1);
             }
         }
         RenderSystem.disableBlend();
     }
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void onRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        Client.EVENTBUS.post(HudRenderEvent.get(matrices, tickDelta));
+    private void onRender(DrawContext drawContext, float f, CallbackInfo ci) {
+        Client.EVENTBUS.post(HudRenderEvent.get(drawContext.getMatrices(), f));
     }
 
     //@Inject(method = "render", at = @At("RETURN"))
@@ -86,12 +87,12 @@ public class InGameHudMixin {
     //}
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
-    public void renderStatusEffectOverlay(MatrixStack matrices, CallbackInfo ci) {
+    public void renderStatusEffectOverlay(DrawContext drawContext, CallbackInfo ci) {
         if(Client.modManager().getMod(PotionMod.class).isEnabled() && Client.modManager().getMod(PotionMod.class).hideVanilla.isEnabled()) ci.cancel();
     }
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    private void renderCrosshair(MatrixStack matrices, CallbackInfo ci) {
+    private void renderCrosshair(DrawContext drawContext, CallbackInfo ci) {
         if(!Client.modManager().getMod(CrosshairMod.class).isEnabled()) return;
         ci.cancel();
         if (!mc.options.getPerspective().isFirstPerson()) return;
@@ -103,13 +104,13 @@ public class InGameHudMixin {
             for (int col = 0; col < 11; col++) {
                 if (mod.crosshair[row][col]) {
                     if (mc.targetedEntity instanceof LivingEntity) {
-                        drawRectangle(matrices,
+                        drawRectangle(drawContext,
                                 mc.getWindow().getScaledWidth() / 2 - 5 + col,
                                 mc.getWindow().getScaledHeight() / 2 - 5 + row,
                                 1, 1, mod.targetColor.getColor().getRGB()
                         );
                     } else {
-                        drawRectangle(matrices,
+                        drawRectangle(drawContext,
                                 mc.getWindow().getScaledWidth() / 2 - 5 + col,
                                 mc.getWindow().getScaledHeight() / 2 - 5 + row,
                                 1, 1, mod.color.getColor().getRGB()
@@ -138,48 +139,48 @@ public class InGameHudMixin {
 
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
             if (targetingEntity) {
-                DrawableHelper.drawTexture(matrices, x, y, 68, 94, 16, 16);
+                drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 68, 94, 16, 16);
             } else if (progress < 1.0F) {
                 int k = (int) (progress * 17.0F);
-                DrawableHelper.drawTexture(matrices, x, y, 36, 94, 16, 4);
-                DrawableHelper.drawTexture(matrices, x, y, 52, 94, k, 4);
+                drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 36, 94, 16, 4);
+                drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 52, 94, k, 4);
             }
             RenderSystem.defaultBlendFunc();
         }
         //matrices.pop();
     }
-    private static void drawRectangle(MatrixStack matrices, int x, int y, int w, int h, int color) {
-        DrawableHelper.fill(matrices, x, y, x + w, y + h, color);
+    private static void drawRectangle(DrawContext drawContext, int x, int y, int w, int h, int color) {
+        drawContext.fill(x, y, x + w, y + h, color);
     }
 
     @Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
-    private void renderScoreboardSidebar(MatrixStack matrices, ScoreboardObjective objective, CallbackInfo ci) {
+    private void renderScoreboardSidebar(DrawContext drawContext, ScoreboardObjective scoreboardObjective, CallbackInfo ci) {
         if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && Client.modManager().getMod(ScoreboardMod.class).hideScoreboard.isEnabled()) {
             ci.cancel();
         }
     }
 
-    @Redirect(method = "renderScoreboardSidebar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/text/Text;FFI)I", ordinal = 1))
-    private int scoreboard$drawHeadingText(TextRenderer textRenderer, MatrixStack matrices, Text text, float x, float y, int color) {
+    @Redirect(method = "renderScoreboardSidebar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I", ordinal = 1))
+    private int scoreboard$drawHeadingText(DrawContext context, TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow) {
         if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && Client.modManager().getMod(ScoreboardMod.class).textShadow.isEnabled()) {
-            return textRenderer.drawWithShadow(matrices, text, x, y, color);
+            return context.drawTextWithShadow(textRenderer, text, x, y, color);
         }
-        return textRenderer.draw(matrices, text, x, y, color);
+        return context.drawText(textRenderer, text, x, y, color, false);
     }
 
-    @Redirect(method = "renderScoreboardSidebar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/text/Text;FFI)I", ordinal = 0))
-    private int scoreboard$drawText(TextRenderer textRenderer, MatrixStack matrices, Text text, float x, float y, int color) {
+    @Redirect(method = "renderScoreboardSidebar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I", ordinal = 0))
+    private int scoreboard$drawText(DrawContext context, TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow) {
         if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && Client.modManager().getMod(ScoreboardMod.class).textShadow.isEnabled()) {
-            return textRenderer.drawWithShadow(matrices, text, x, y, color);
+            return context.drawTextWithShadow(textRenderer, text, x, y, color);
         }
-        return textRenderer.draw(matrices, text, x, y, color);
+        return context.drawText(textRenderer, text, x, y, color, false);
     }
 
     @ModifyArg(
             method = "renderScoreboardSidebar",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/client/util/math/MatrixStack;Ljava/lang/String;FFI)I"
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;IIIZ)I"
             ),
             index = 1
     )
@@ -189,7 +190,7 @@ public class InGameHudMixin {
     }
 
     @Redirect(method = "renderScoreboardSidebar", slice = @Slice(from = @At(value = "INVOKE", target = "Ljava/util/Iterator;hasNext()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;getWidth(Ljava/lang/String;)I", ordinal = 0))
-    private int scoreboard$modifyScoreWidth(TextRenderer textRenderer, String score, MatrixStack matrices, ScoreboardObjective objective) {
+    private int scoreboard$modifyScoreWidth(TextRenderer textRenderer, String score, DrawContext context, ScoreboardObjective objective) {
         return (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && !Client.modManager().getMod(ScoreboardMod.class).numbers.isEnabled()) ? 0 : textRenderer.getWidth(score);
     }
 

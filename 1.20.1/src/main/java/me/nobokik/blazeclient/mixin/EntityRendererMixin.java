@@ -2,11 +2,9 @@ package me.nobokik.blazeclient.mixin;
 
 import me.nobokik.blazeclient.Client;
 import me.nobokik.blazeclient.api.font.JColor;
-import me.nobokik.blazeclient.api.helpers.IndicatorHelper;
 import me.nobokik.blazeclient.mod.mods.NametagsMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -68,12 +66,5 @@ public abstract class EntityRendererMixin<T extends Entity>  {
 
             matrices.pop();
         }
-    }
-
-    @Inject(method = "renderLabelIfPresent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", ordinal = 0))
-    public void addBadges(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
-                                        CallbackInfo ci) {
-        if (entity instanceof AbstractClientPlayerEntity && text.getString().contains(entity.getName().getString()))
-            IndicatorHelper.addBadge(entity, matrices);
     }
 }
