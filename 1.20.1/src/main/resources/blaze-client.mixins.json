@@ -8,8 +8,6 @@
     "defaultRequire": 1
   },
   "client": [
-    "MouseMixin",
-    "SimpleOptionMixin",
     "BuiltinModelItemRendererMixin",
     "ChatHudMixin",
     "ClientBrandRetrieverMixin",
@@ -26,8 +24,11 @@
     "LivingEntityRendererMixin",
     "LogoDrawerMixin",
     "MinecraftClientMixin",
+    "MouseMixin",
     "OverlayTextureMixin",
+    "PlayerListHudMixin",
     "RenderSystemMixin",
+    "SimpleOptionMixin",
     "SplashScreenMixin",
     "TitleScreenMixin",
     "WindowMixin"

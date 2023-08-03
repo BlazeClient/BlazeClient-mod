@@ -27,6 +27,7 @@
     "LogoDrawerMixin",
     "MinecraftClientMixin",
     "OverlayTextureMixin",
+    "PlayerListHudMixin",
     "RenderSystemMixin",
     "SplashScreenMixin",
     "TitleScreenMixin",

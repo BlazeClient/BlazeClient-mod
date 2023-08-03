@@ -4,9 +4,12 @@ import me.nobokik.blazeclient.api.event.events.WorldRenderEvent;
 import me.nobokik.blazeclient.api.event.orbit.EventBus;
 import me.nobokik.blazeclient.api.event.orbit.IEventBus;
 import me.nobokik.blazeclient.api.helpers.CPSHelper;
+import me.nobokik.blazeclient.api.helpers.IndicatorHelper;
 import me.nobokik.blazeclient.menu.*;
 import me.nobokik.blazeclient.mod.ModManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
@@ -55,8 +58,21 @@ public final class Client implements ModInitializer {
 		this.configManager.loadConfig();
 	}
 
+
+	private int tick = 0;
 	@Override
 	public void onInitialize() {
 		//init();
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> IndicatorHelper.enableClient());
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> IndicatorHelper.disableClient());
+
+		ClientTickEvents.END_WORLD_TICK.register((client) -> {
+			if(tick != 100) {
+				tick++;
+			} else {
+				tick = 0;
+				IndicatorHelper.getUsers();
+			}
+		});
 	}
 }
