@@ -6,6 +6,7 @@ import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiWindowFlags;
 import me.nobokik.blazeclient.gui.ImguiLoader;
 import me.nobokik.blazeclient.gui.Renderable;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -113,7 +114,7 @@ public class MainMenuButtons implements Renderable {
 
         ImGui.pushFont(ImguiLoader.getDosisFont32());
         ImGui.pushStyleColor(ImGuiCol.Text, 0.80f, 0.84f, 0.96f, (float) (0.5f * percent));
-        ImGui.text("Blaze Client 1.19.4");
+        ImGui.text("Blaze Client 1.19.4 (" + FabricLoader.getInstance().getModContainer("blaze-client").get().getMetadata().getVersion() + ")");
         ImGui.popFont();
         ImGui.popStyleColor();
 

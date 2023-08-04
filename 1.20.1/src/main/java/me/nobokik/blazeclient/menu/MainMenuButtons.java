@@ -6,6 +6,7 @@ import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiWindowFlags;
 import me.nobokik.blazeclient.gui.ImguiLoader;
 import me.nobokik.blazeclient.gui.Renderable;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -91,14 +92,14 @@ public class MainMenuButtons implements Renderable {
         ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.1f, 0.1f, 0.16f, (float) (0.8f * percent));
         if (ImGui.button("\uF007 Singleplayer", 450f, 100f)) {
             mc.setScreen(new SelectWorldScreen(mc.currentScreen));
-            mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            //mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         }
         if (ImGui.button("\uF0C0 Multiplayer", 425f, 100f)) {
             mc.setScreen(new MultiplayerScreen(mc.currentScreen));
-            mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            //mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         }
         if (ImGui.button("\uF057 Quit Game", 400f, 100f)) {
-            mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            //mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             mc.scheduleStop();
         }
 
@@ -113,7 +114,7 @@ public class MainMenuButtons implements Renderable {
 
         ImGui.pushFont(ImguiLoader.getDosisFont32());
         ImGui.pushStyleColor(ImGuiCol.Text, 0.80f, 0.84f, 0.96f, (float) (0.5f * percent));
-        ImGui.text("Blaze Client 1.20.1");
+        ImGui.text("Blaze Client 1.20.1 (" + FabricLoader.getInstance().getModContainer("blaze-client").get().getMetadata().getVersion() + ")");
         ImGui.popFont();
         ImGui.popStyleColor();
 
@@ -135,7 +136,7 @@ public class MainMenuButtons implements Renderable {
         ImGui.getStyle().setFrameRounding(25f);
         if (ImGui.button("\uF013", 90f, 90f)) {
             mc.setScreen(new OptionsScreen(mc.currentScreen, mc.options));
-            mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            //mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         }
         if (ImGui.isItemHovered()) {
             ImGui.pushFont(ImguiLoader.getDosisFont32());
@@ -146,7 +147,7 @@ public class MainMenuButtons implements Renderable {
         ImGui.getStyle().setFrameRounding(25f);
         if (ImGui.button("\uF0AC", 90f, 90f)) {
             mc.setScreen(new RealmsMainScreen(mc.currentScreen));
-            mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            //mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         }
         if (ImGui.isItemHovered()) {
             ImGui.pushFont(ImguiLoader.getDosisFont32());
