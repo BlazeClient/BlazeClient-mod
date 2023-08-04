@@ -28,6 +28,16 @@ shared/build/
 run/
 .idea/
 
+1.20.1/.idea
+1.20.1/.gradle
+
+1.19.4/.idea
+1.19.4/.gradle
+
+shared/.idea
+shared/.gradle
+
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
