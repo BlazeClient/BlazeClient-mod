@@ -42,7 +42,7 @@ public class IndicatorHelper {
         return sb.toString();
     }
 
-    public static void addBadge(Entity entity, DrawContext drawContext) {
+    public static void addBadge(Entity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         if (entity instanceof PlayerEntity && !entity.isSneaky()) {
             if (isUsingClient(entity.getUuid())) {
                 RenderSystem.enableDepthTest();
@@ -56,8 +56,8 @@ public class IndicatorHelper {
                         / 2
                         + (10));
 
+
                 RenderSystem.setShaderColor(1, 1, 1, 1);
-                drawContext.drawTexture(badgeIcon, x, 0, 0, 0, 8, 8, 8, 8);
             }
         }
     }
