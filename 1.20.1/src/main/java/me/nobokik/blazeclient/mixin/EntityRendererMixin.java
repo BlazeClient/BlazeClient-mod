@@ -29,6 +29,8 @@ public abstract class EntityRendererMixin<T extends Entity>  {
 
     @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
     protected void renderLabelIfPresent(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if (entity instanceof AbstractClientPlayerEntity && text.getString().contains(entity.getName().getString()))
+            IndicatorHelper.addBadge(entity, matrices, vertexConsumers);
         NametagsMod mod = Client.modManager().getMod(NametagsMod.class);
         if(!mod.isEnabled()) return;
         ci.cancel();
@@ -68,13 +70,5 @@ public abstract class EntityRendererMixin<T extends Entity>  {
 
             matrices.pop();
         }
-    }
-
-
-    @Inject(method = "renderLabelIfPresent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", ordinal = 0))
-    public void axolotlclient$addBadges(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
-                                        CallbackInfo ci) {
-        if (entity instanceof AbstractClientPlayerEntity && text.getString().contains(entity.getName().getString()))
-            IndicatorHelper.addBadge(entity, matrices, vertexConsumers);
     }
 }
