@@ -66,6 +66,7 @@ public class IndicatorHelper {
     }
 
     public static boolean isUsingClient(UUID u) {
+        if(!Client.modManager().getMod(GeneralSettings.class).showClientBadges.isEnabled()) return false;
         assert MinecraftClient.getInstance().player != null;
         if (u == MinecraftClient.getInstance().player.getUuid()) {
             return true;
