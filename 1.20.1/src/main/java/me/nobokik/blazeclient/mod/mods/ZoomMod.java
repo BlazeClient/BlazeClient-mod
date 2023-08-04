@@ -45,6 +45,7 @@ public class ZoomMod extends Mod {
     }
 
     public double getFOV(double fov) {
+        if(mc.currentScreen != null) return fov;
         if(scroll > 15) scroll = 15;
         if(scroll < 0) scroll = 0;
         if(!zoomEnabled || !this.isEnabled()) return fov;
