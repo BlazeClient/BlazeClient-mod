@@ -7,6 +7,4 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(HandledScreenAccessor.class)
 public interface HandledScreenAccessor {
-    @Accessor
-    void drawMouseoverTooltip(MatrixStack matrices, int mouseX, int mouseY);
 }
