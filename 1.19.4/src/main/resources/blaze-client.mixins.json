@@ -20,6 +20,7 @@
     "EntityRendererMixin",
     "GameRendererMixin",
     "InGameHudMixin",
+    "InGameOverlayRendererMixin",
     "InventoryScreenMixin",
     "KeyboardMixin",
     "LightmapManagerMixin",

@@ -24,6 +24,7 @@ public class GeneralSettings extends Mod {
     public final BooleanSetting minimalViewBob = new BooleanSetting("Minimal View Bob", this, false);
     public final BooleanSetting showOwnNametag = new BooleanSetting("Show Own Nametag", this, false);
     public final BooleanSetting lowShield = new BooleanSetting("Low Shield", this, false);
+    public final BooleanSetting lowFire = new BooleanSetting("Low Fire", this, false);
     public final BooleanSetting showClientBadges = new BooleanSetting("Show Client Badges", this, true);
     public final BooleanSetting hourFormat = new BooleanSetting("24 Hour Format", this, true);
 
@@ -61,6 +62,7 @@ public class GeneralSettings extends Mod {
         showOwnNametag.render();
         minimalViewBob.render();
         lowShield.render();
+        lowFire.render();
         showClientBadges.render();
         ImGui.unindent(30f);
         text("Mods", 1f);
