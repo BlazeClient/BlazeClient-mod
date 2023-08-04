@@ -3,6 +3,8 @@ package me.nobokik.blazeclient.api.helpers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.nobokik.blazeclient.Client;
+import me.nobokik.blazeclient.mod.GeneralSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.PlayerListEntry;
@@ -43,6 +45,7 @@ public class IndicatorHelper {
     }
 
     public static void addBadge(Entity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+        if(!Client.modManager().getMod(GeneralSettings.class).showClientBadges.isEnabled()) return;
         if (entity instanceof PlayerEntity && !entity.isSneaky()) {
             if (isUsingClient(entity.getUuid())) {
                 RenderSystem.enableDepthTest();
@@ -72,6 +75,7 @@ public class IndicatorHelper {
     }
 
     public static void getUsers() {
+        if(!Client.modManager().getMod(GeneralSettings.class).showClientBadges.isEnabled()) return;
         HttpURLConnection connection;
         try {
             URL url = new URL("http://94.250.250.243:1337/getPlayers");
