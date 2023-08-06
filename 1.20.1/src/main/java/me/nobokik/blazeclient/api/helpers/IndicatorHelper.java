@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static me.nobokik.blazeclient.Client.mc;
 
@@ -76,40 +77,44 @@ public class IndicatorHelper {
     }
 
     public static void getUsers() {
-        if(!Client.modManager().getMod(GeneralSettings.class).showClientBadges.isEnabled()) return;
-        HttpURLConnection connection;
-        try {
-            URL url = new URL("http://94.250.250.243:1337/getPlayers");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            //connection.setRequestProperty("Authorization", "a");
-            connection.setDoOutput(true);
+        CompletableFuture.runAsync(() -> {
+            if (!Client.modManager().getMod(GeneralSettings.class).showClientBadges.isEnabled()) return;
+            HttpURLConnection connection;
+            try {
+                URL url = new URL("http://94.250.250.243:1337/getPlayers");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("Accept", "application/json");
+                //connection.setRequestProperty("Authorization", "a");
+                connection.setDoOutput(true);
 
-            JsonObject jsonObject = new JsonObject();
-            for (PlayerListEntry entry : Objects.requireNonNull(mc.getNetworkHandler()).getPlayerList()) {
-                jsonObject.addProperty(entry.getProfile().getId().toString(), "false");
-            }
-            String jsonInputString = jsonObject.toString();
-            //System.out.println(jsonInputString);
-
-            try (OutputStream outputStream = connection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                outputStream.write(input, 0, input.length);
-            }
-
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                String response = readAll(br);
-                JsonObject convertedResponse = GSON.fromJson(response, JsonObject.class);
-                //System.out.println(convertedResponse.toString());
+                JsonObject jsonObject = new JsonObject();
                 for (PlayerListEntry entry : Objects.requireNonNull(mc.getNetworkHandler()).getPlayerList()) {
-                    if (convertedResponse.get(entry.getProfile().getId().toString()).getAsString().equals("true")) clientUsers.add(entry.getProfile().getId());
-                    else clientUsers.remove(entry.getProfile().getId());
+                    jsonObject.addProperty(entry.getProfile().getId().toString(), "false");
+                }
+                String jsonInputString = jsonObject.toString();
+                //System.out.println(jsonInputString);
+
+                try (OutputStream outputStream = connection.getOutputStream()) {
+                    byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                    outputStream.write(input, 0, input.length);
                 }
 
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                    String response = readAll(br);
+                    JsonObject convertedResponse = GSON.fromJson(response, JsonObject.class);
+                    //System.out.println(convertedResponse.toString());
+                    for (PlayerListEntry entry : Objects.requireNonNull(mc.getNetworkHandler()).getPlayerList()) {
+                        if (convertedResponse.get(entry.getProfile().getId().toString()).getAsString().equals("true"))
+                            clientUsers.add(entry.getProfile().getId());
+                        else clientUsers.remove(entry.getProfile().getId());
+                    }
+
+                }
+            } catch (Exception ignored) {
             }
-        } catch (Exception ignored) {}
+        });
     }
 
     public static void enableClient() {
