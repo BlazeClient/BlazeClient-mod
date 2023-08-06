@@ -90,6 +90,7 @@ public class ModManager {
 		addMod(new ZoomMod());
 		//addMod(new HitColorMod());
 		addMod(new HitboxMod());
+		addMod(new FreelookMod());
 	}
 
 	@EventHandler
