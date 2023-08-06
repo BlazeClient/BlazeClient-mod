@@ -7,8 +7,8 @@ import imgui.flag.ImGuiWindowFlags;
 import me.nobokik.blazeclient.gui.ImguiLoader;
 import me.nobokik.blazeclient.gui.Renderable;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.SplashOverlay;
-import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.RunArgs;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.AccessibilityOptionsScreen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.realms.gui.screen.RealmsMainScreen;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 
 import static me.nobokik.blazeclient.Client.mc;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
@@ -91,7 +92,12 @@ public class MainMenuButtons implements Renderable {
         ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.09f, 0.09f, 0.15f, (float) (0.65f * percent));
         ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.1f, 0.1f, 0.16f, (float) (0.8f * percent));
         if (ImGui.button("\uF007 Singleplayer", 450f, 100f)) {
-            mc.setScreen(new SelectWorldScreen(mc.currentScreen));
+            if (mc.getLevelStorage().getLevelList().isEmpty()) {
+                Screen screen = new SelectWorldScreen(new TitleScreen());
+                mc.setScreen(new DisconnectedScreen(screen, Text.of("Error!"), Text.of("World does not exist!")));
+            } else {
+                mc.setScreen(new SelectWorldScreen(new TitleScreen()));
+            }
             mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
         }
         if (ImGui.button("\uF0C0 Multiplayer", 425f, 100f)) {
