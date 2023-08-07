@@ -26,6 +26,9 @@ public class GeneralSettings extends Mod {
     public final BooleanSetting showClientBadges = new BooleanSetting("Show Client Badges", this, true);
     public final BooleanSetting lowShield = new BooleanSetting("Low Shield", this, false);
     public final BooleanSetting lowFire = new BooleanSetting("Low Fire", this, false);
+    public final BooleanSetting numericalPing = new BooleanSetting("Numerical Ping", this, false);
+    public final BooleanSetting smallPing = new BooleanSetting("Small Ping", this, false);
+    public final BooleanSetting msPing = new BooleanSetting("Ping MS text", this, false);
     public final BooleanSetting hourFormat = new BooleanSetting("24 Hour Format", this, true);
 
     public final BooleanSetting showInChat = new BooleanSetting("Show Mods in Chat", this, true);
@@ -64,6 +67,8 @@ public class GeneralSettings extends Mod {
         lowShield.render();
         lowFire.render();
         showClientBadges.render();
+        numericalPing.render();
+        smallPing.render();
         ImGui.unindent(30f);
         text("Mods", 1f);
         ImGui.indent(30f);
