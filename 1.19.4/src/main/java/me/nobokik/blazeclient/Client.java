@@ -65,6 +65,9 @@ public final class Client implements ModInitializer {
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> IndicatorHelper.enableClient());
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> IndicatorHelper.disableClient());
 
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> Client.configManager().saveConfig());
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> Client.configManager().saveConfig());
+
 		ClientTickEvents.END_WORLD_TICK.register((client) -> {
 			if(tick != 100) {
 				tick++;
