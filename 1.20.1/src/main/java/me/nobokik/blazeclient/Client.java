@@ -1,5 +1,6 @@
 package me.nobokik.blazeclient;
 import me.nobokik.blazeclient.api.config.ConfigManager;
+import me.nobokik.blazeclient.api.discord.DiscordClient;
 import me.nobokik.blazeclient.api.event.events.WorldRenderEvent;
 import me.nobokik.blazeclient.api.event.orbit.EventBus;
 import me.nobokik.blazeclient.api.event.orbit.IEventBus;
@@ -56,6 +57,8 @@ public final class Client implements ModInitializer {
 		ModSettings.toggleVisibility();
 		SideMenu.toggleVisibility();
 		this.configManager.loadConfig();
+
+		DiscordClient.init();
 	}
 
 

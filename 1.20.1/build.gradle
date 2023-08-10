@@ -16,7 +16,9 @@ group = project.maven_group
 evaluationDependsOn(':shared')
 
 repositories {
-	maven { url 'https://api.modrinth.com/maven' }
+	jcenter()
+	maven { url = "https://jitpack.io/" }
+	maven { url = "https://api.modrinth.com/maven" }
 }
 
 configurations {
@@ -27,10 +29,12 @@ configurations {
 
 dependencies {
 	implementation 'org.jetbrains:annotations:24.0.0'
+	include(implementation "club.minnced:discord-rpc-release:v3.4.0")
+	include(implementation "com.github.MinnDevelopment:java-discord-rpc:v2.0.2")
 
 	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:1.20.1"
-	mappings "net.fabricmc:yarn:1.20.1+build.10"
+	minecraft 'com.mojang:minecraft:1.20.1'
+	mappings "net.fabricmc:yarn:1.20.1+build.1"
 	modImplementation "net.fabricmc:fabric-loader:0.14.21"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
