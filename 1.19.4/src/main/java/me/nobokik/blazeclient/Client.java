@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import me.nobokik.blazeclient.api.discord.DiscordClient;
 
 import java.lang.invoke.MethodHandles;
 
@@ -56,6 +57,8 @@ public final class Client implements ModInitializer {
 		ModSettings.toggleVisibility();
 		SideMenu.toggleVisibility();
 		this.configManager.loadConfig();
+
+		DiscordClient.init();
 	}
 
 	private int tick = 0;

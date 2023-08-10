@@ -41,6 +41,9 @@ public class GeneralSettings extends Mod {
 
     public final BooleanSetting unlimitedChatHistory = new BooleanSetting("Unlimited Chat History", this, false);
     public final BooleanSetting stackChatMessages = new BooleanSetting("Stack Chat Messages", this, false);
+
+    public final BooleanSetting enableDiscordRPC = new BooleanSetting("Enable Discord RPC", this, true);
+    public final BooleanSetting showAddress = new BooleanSetting("Show Server Address", this, true);
     public GeneralSettings() {
         super("General", "General client settings.", "\uF085");
     }
@@ -83,6 +86,11 @@ public class GeneralSettings extends Mod {
         text("Darken Background", 1f);
         ImGui.indent(30f);
         darkenInventory.render();
+        ImGui.unindent(30f);
+        text("Discord", 1f);
+        ImGui.indent(30f);
+        enableDiscordRPC.render();
+        showAddress.render();
         ImGui.unindent(30f);
         ImGui.popStyleColor(8);
         ImGui.popFont();
