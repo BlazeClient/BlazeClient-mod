@@ -59,9 +59,6 @@ public class IndicatorHelper {
                                         .getString()))
                         / 2
                         + (10));
-
-
-                RenderSystem.setShaderColor(1, 1, 1, 1);
             }
         }
     }

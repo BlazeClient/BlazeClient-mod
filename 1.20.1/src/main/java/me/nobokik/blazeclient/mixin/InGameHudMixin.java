@@ -122,31 +122,31 @@ public class InGameHudMixin {
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
 
-        //AttackIndicator indicator = mc.options.getAttackIndicator().getValue();
-        //if (indicator.getId() == 1) {
-        float progress = mc.player.getAttackCooldownProgress(0.0F);
+        AttackIndicator indicator = mc.options.getAttackIndicator().getValue();
+        if (indicator == AttackIndicator.CROSSHAIR) {
+            float progress = mc.player.getAttackCooldownProgress(0.0F);
 
-        // Whether a cross should be displayed under the indicator
-        boolean targetingEntity = false;
-        if (mc.targetedEntity != null && mc.targetedEntity instanceof LivingEntity
-                && progress >= 1.0F) {
-            targetingEntity = mc.player.getAttackCooldownProgressPerTick() > 5.0F;
-            targetingEntity &= mc.targetedEntity.isAlive();
+            // Whether a cross should be displayed under the indicator
+            boolean targetingEntity = false;
+            if (mc.targetedEntity != null && mc.targetedEntity instanceof LivingEntity
+                    && progress >= 1.0F) {
+                targetingEntity = mc.player.getAttackCooldownProgressPerTick() > 5.0F;
+                targetingEntity &= mc.targetedEntity.isAlive();
+            }
+
+            int x = (int) ((mc.getWindow().getScaledWidth()) / 2 - 8);
+            int y = (int) ((mc.getWindow().getScaledHeight()) / 2 - 7 + 16);
+
+            //RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
+            if (targetingEntity) {
+                drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 68, 94, 16, 16);
+            } else if (progress < 1.0F) {
+                int k = (int) (progress * 17.0F);
+                drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 36, 94, 16, 4);
+                drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 52, 94, k, 4);
+            }
+            RenderSystem.defaultBlendFunc();
         }
-
-        int x = (int) ((mc.getWindow().getScaledWidth()) / 2 - 8);
-        int y = (int) ((mc.getWindow().getScaledHeight()) / 2 - 7 + 16);
-
-        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
-        if (targetingEntity) {
-            drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 68, 94, 16, 16);
-        } else if (progress < 1.0F) {
-            int k = (int) (progress * 17.0F);
-            drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 36, 94, 16, 4);
-            drawContext.drawTexture(new Identifier("textures/gui/icons.png"), x, y, 52, 94, k, 4);
-        }
-        RenderSystem.defaultBlendFunc();
-        //}
         //matrices.pop();
     }
     private static void drawRectangle(DrawContext drawContext, int x, int y, int w, int h, int color) {

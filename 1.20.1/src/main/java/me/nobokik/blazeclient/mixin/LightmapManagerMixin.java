@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(LightmapTextureManager.class)
 public abstract class LightmapManagerMixin {
 
-//    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;getGamma()Lnet/minecraft/client/option/SimpleOption;"))
-//    public SimpleOption<Double> fullBright(GameOptions instance) {
-//        if (Client.modManager().getMod(GeneralSettings.class).fullbright.isEnabled())
-//            return new SimpleOption<>("options.gamma", SimpleOption.emptyTooltip(), (optionText, value) -> optionText,
-//                    SimpleOption.DoubleSliderCallbacks.INSTANCE, 15D, value -> {
-//            });
-//        return instance.getGamma();
-//    }
+    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;getGamma()Lnet/minecraft/client/option/SimpleOption;"))
+    public SimpleOption<Double> fullBright(GameOptions instance) {
+        if (Client.modManager().getMod(GeneralSettings.class).fullbright.isEnabled())
+            return new SimpleOption<>("options.gamma", SimpleOption.emptyTooltip(), (optionText, value) -> optionText,
+                    SimpleOption.DoubleSliderCallbacks.INSTANCE, 15D, value -> {
+            });
+        return instance.getGamma();
+    }
 }

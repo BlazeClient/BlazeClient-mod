@@ -60,7 +60,7 @@ public class MainMenuButtons implements Renderable {
 
     @Override
     public void render() {
-        if(!(mc.currentScreen instanceof TitleScreen)) {
+        if(!(mc.currentScreen instanceof TitleScreen || !reloadComplete)) {
             firstFrame = true;
             openTime = System.currentTimeMillis();
             return;
