@@ -26,7 +26,7 @@ public class ArmorMod extends Mod implements Renderable {
     //public final BooleanSetting reversed = new BooleanSetting("Side", this, true);
     public final ModeSetting direction = new ModeSetting("Direction", this, "Vertical", "Vertical", "Horizontal");
     public boolean firstFrame = true;
-    public ImVec2 position = new ImVec2(82, 200);
+    //public ImVec2 position = new ImVec2(82, 200);
     public ArmorMod() {
         super("Armor Status", "Shows your armor status.", "\uF132");
         toggleVisibility();
@@ -50,7 +50,6 @@ public class ArmorMod extends Mod implements Renderable {
         else if(mc.currentScreen != null && !FirstMenu.getInstance().isVisible)
             return;
 
-        firstFrame = false;
         int imGuiWindowFlags = 0;
         imGuiWindowFlags |= ImGuiWindowFlags.NoTitleBar;
         imGuiWindowFlags |= ImGuiWindowFlags.NoDocking;
@@ -83,6 +82,9 @@ public class ArmorMod extends Mod implements Renderable {
             this.updatedPos.y = 0;
             ImGui.setNextWindowPos(this.position.x, this.position.y);
         }
+        if(firstFrame) {
+            ImGui.setNextWindowPos(this.position.x, this.position.y);
+        }
         ImGui.getStyle().setWindowRounding(0);
         ImGui.getStyle().setWindowBorderSize(1);
         ImGui.begin(this.getName(), imGuiWindowFlags);
@@ -111,5 +113,6 @@ public class ArmorMod extends Mod implements Renderable {
             ImGui.popStyleColor(4);
         }
         ImGui.end();
+        if(firstFrame) firstFrame = false;
     }
 }
