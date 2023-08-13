@@ -2,6 +2,7 @@ package me.nobokik.blazeclient.mod.mods;
 
 import imgui.ImFont;
 import imgui.ImGui;
+import imgui.ImVec2;
 import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiWindowFlags;
 import me.nobokik.blazeclient.Client;
@@ -22,6 +23,7 @@ import me.nobokik.blazeclient.mod.setting.settings.NumberSetting;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import org.apache.commons.lang3.text.WordUtils;
 
 import static me.nobokik.blazeclient.Client.modManager;
@@ -37,6 +39,7 @@ public class CoordsMod extends Mod implements Renderable {
     public final BooleanSetting roundedCorners = new BooleanSetting("Rounded Corners", this, false);
     public final ModeSetting fontSetting = new ModeSetting("Font", this, "Minecraft", "Minecraft", "Dosis", "Mono");
     public final BooleanSetting biome = new BooleanSetting("Biome", this, true);
+    public final BooleanSetting direction = new BooleanSetting("Direction", this, true);
     public CoordsMod() {
         super("Coords", "Shows your coordinates.", "\uF124");
         toggleVisibility();
@@ -112,9 +115,46 @@ public class CoordsMod extends Mod implements Renderable {
         if(roundedCorners.isEnabled()) ImGui.getStyle().setWindowRounding(16f * scale.getFValue());
         ImGui.begin(this.getName(), imGuiWindowFlags);
         if(mc.player != null && mc.world != null) {
+            String dirString = "";
+            if(mc.player.getHorizontalFacing().getAxis() == Direction.Axis.X) {
+                if(mc.player.getHorizontalFacing().getDirection() == Direction.AxisDirection.POSITIVE) {
+                    dirString = "X+";
+                } else if(mc.player.getHorizontalFacing().getDirection() == Direction.AxisDirection.NEGATIVE) {
+                    dirString = "X-";
+                }
+            } else if(mc.player.getHorizontalFacing().getAxis() == Direction.Axis.Z) {
+                if(mc.player.getHorizontalFacing().getDirection() == Direction.AxisDirection.POSITIVE) {
+                    dirString = "Z+";
+                } else if(mc.player.getHorizontalFacing().getDirection() == Direction.AxisDirection.NEGATIVE) {
+                    dirString = "Z-";
+                }
+            }
+
+            String nameString = "";
+            if(mc.player.getHorizontalFacing().getName().equals("east")) nameString = "E";
+            if(mc.player.getHorizontalFacing().getName().equals("west")) nameString = "W";
+            if(mc.player.getHorizontalFacing().getName().equals("south")) nameString = "S";
+            if(mc.player.getHorizontalFacing().getName().equals("north")) nameString = "N";
+
+            float nameWidth = ImGui.calcTextSize(nameString).x;
+            float dirWidth = ImGui.calcTextSize(dirString).x;
+
             if (textShadow.isEnabled()) {
                 c = text.getColor().getFloatColor();
+                ImVec2 oldPos;
+
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - dirWidth);
+                if(direction.isEnabled()) UI.shadowText(dirString, 24, c[0], c[1], c[2], 1f);
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
                 UI.shadowText(" X: " + MathHelper.round(mc.player.getPos().x, 1), 24, c[0], c[1], c[2], 1f);
+
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - nameWidth);
+                if(direction.isEnabled()) UI.shadowText(nameString, 24, c[0], c[1], c[2], 1f);
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
                 UI.shadowText(" Y: " + MathHelper.round(mc.player.getPos().y, 1), 24, c[0], c[1], c[2], 1f);
                 UI.shadowText(" Z: " + MathHelper.round(mc.player.getPos().z, 1), 24, c[0], c[1], c[2], 1f);
                 String biomeString =
@@ -124,7 +164,19 @@ public class CoordsMod extends Mod implements Renderable {
                 if (biome.isEnabled())
                     UI.shadowText(" Biome: " + biomeString, 24, c[0], c[1], c[2], 1f);
             } else {
+                ImVec2 oldPos;
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - dirWidth);
+                if(direction.isEnabled()) ImGui.text(dirString);
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
                 ImGui.text(" X: " + MathHelper.round(mc.player.getPos().x, 1));
+
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - nameWidth);
+                if(direction.isEnabled()) ImGui.text(nameString);
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
                 ImGui.text(" Y: " + MathHelper.round(mc.player.getPos().y, 1));
                 ImGui.text(" Z: " + MathHelper.round(mc.player.getPos().z, 1));
                 String biomeString =
@@ -136,14 +188,39 @@ public class CoordsMod extends Mod implements Renderable {
             }
         } else {
             if (textShadow.isEnabled()) {
+                ImVec2 oldPos;
                 c = text.getColor().getFloatColor();
+
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - ImGui.calcTextSize("??").x);
+                if(direction.isEnabled()) UI.shadowText("??", 24, c[0], c[1], c[2], 1f);
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
                 UI.shadowText(" X: ???", 24, c[0], c[1], c[2], 1f);
+
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - ImGui.calcTextSize("?").x);
+                if(direction.isEnabled()) UI.shadowText("?", 24, c[0], c[1], c[2], 1f);
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
+
                 UI.shadowText(" Y: ???", 24, c[0], c[1], c[2], 1f);
                 UI.shadowText(" Z: ???", 24, c[0], c[1], c[2], 1f);
                 if (biome.isEnabled())
                     UI.shadowText(" Biome: ???", 24, c[0], c[1], c[2], 1f);
             } else {
+                ImVec2 oldPos;
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - ImGui.calcTextSize("??").x);
+                if(direction.isEnabled()) ImGui.text("??");
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
                 ImGui.text(" X: ???");
+
+                oldPos = ImGui.getCursorPos();
+                ImGui.setCursorPosX(width.getFValue() * scale.getFValue() - 4 - ImGui.calcTextSize("?").x);
+                if(direction.isEnabled()) ImGui.text("?");
+                ImGui.setCursorPos(oldPos.x, oldPos.y);
+
                 ImGui.text(" Y: ???");
                 ImGui.text(" Z: ???");
                 if (biome.isEnabled())
