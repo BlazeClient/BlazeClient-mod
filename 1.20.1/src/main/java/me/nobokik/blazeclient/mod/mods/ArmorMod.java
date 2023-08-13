@@ -86,7 +86,7 @@ public class ArmorMod extends Mod implements Renderable {
         ImGui.getStyle().setWindowRounding(0);
         ImGui.getStyle().setWindowBorderSize(1);
         ImGui.begin(this.getName(), imGuiWindowFlags);
-        position = ImGui.getWindowPos();
+        this.position = ImGui.getWindowPos();
         ImGui.popStyleColor(2);
         ImGui.getStyle().setWindowBorderSize(0);
         ImGui.getStyle().setWindowRounding(4f);
