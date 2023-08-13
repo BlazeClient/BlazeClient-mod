@@ -9,10 +9,7 @@ import me.nobokik.blazeclient.api.font.JColor;
 import me.nobokik.blazeclient.mod.Mod;
 import me.nobokik.blazeclient.mod.mods.CrosshairMod;
 import me.nobokik.blazeclient.mod.setting.Setting;
-import me.nobokik.blazeclient.mod.setting.settings.BooleanSetting;
-import me.nobokik.blazeclient.mod.setting.settings.ColorSetting;
-import me.nobokik.blazeclient.mod.setting.settings.ModeSetting;
-import me.nobokik.blazeclient.mod.setting.settings.NumberSetting;
+import me.nobokik.blazeclient.mod.setting.settings.*;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -73,6 +70,8 @@ public class ConfigManager {
                         float[] jf = jc.getFloatColor();
                         System.out.println();
                         colorSetting.setColor(new JColor(jf[0], jf[1], jf[2], colorJson.get("alpha").getAsInt() * 0.392156862745098f / 100f), colorJson.get("rainbow").getAsBoolean());
+                    } else if (setting instanceof KeybindSetting keybindSetting) {
+                        keybindSetting.setKeyCode(settingJson.getAsInt());
                     }
                 }
                 JsonElement positionXJson = moduleConfig.get("posX");
@@ -125,6 +124,8 @@ public class ConfigManager {
                         colorJson.addProperty("alpha", colorSetting.getValue().getAlpha());
                         colorJson.addProperty("rainbow", colorSetting.isRainbow());
                         moduleConfig.add(setting.getName(), colorJson);
+                    } else if (setting instanceof KeybindSetting keybindSetting) {
+                        moduleConfig.addProperty(setting.getName(), keybindSetting.getKeyCode());
                     }
                 }
 
