@@ -1,6 +1,7 @@
 package me.nobokik.blazeclient;
 import me.nobokik.blazeclient.api.config.ConfigManager;
 import me.nobokik.blazeclient.api.discord.DiscordClient;
+import me.nobokik.blazeclient.api.event.events.OverlayReloadListener;
 import me.nobokik.blazeclient.api.event.events.WorldRenderEvent;
 import me.nobokik.blazeclient.api.event.orbit.EventBus;
 import me.nobokik.blazeclient.api.event.orbit.IEventBus;
@@ -73,6 +74,7 @@ public final class Client implements ModInitializer {
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> Client.configManager().saveConfig());
 
 		ClientTickEvents.END_WORLD_TICK.register((client) -> {
+			OverlayReloadListener.callEvent();
 			if(tick != 100) {
 				tick++;
 			} else {
