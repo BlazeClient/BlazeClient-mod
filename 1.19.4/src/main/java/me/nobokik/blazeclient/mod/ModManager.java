@@ -88,7 +88,7 @@ public class ModManager {
 		addMod(new CrosshairMod());
 		addMod(new NametagsMod());
 		addMod(new ZoomMod());
-		//addMod(new HitColorMod());
+		addMod(new HitColorMod());
 		addMod(new HitboxMod());
 		addMod(new FreelookMod());
 	}
