@@ -29,6 +29,7 @@ public class FreelookMod extends Mod {
 
     @EventHandler
     private void onKey(KeyPressEvent event) {
+        if(mc.currentScreen != null) return;
         if(!this.isEnabled()) return;
         if(event.key != button.getKeyCode()) return;
 
