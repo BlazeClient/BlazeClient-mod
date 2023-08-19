@@ -35,7 +35,7 @@ public class PotionMod extends Mod implements Renderable {
     public final ColorSetting text = new ColorSetting("Text Color", this, new JColor(1f, 1f, 1f), false);
     public final ColorSetting durationText = new ColorSetting("Duration Text Color", this, new JColor(0.7f, 0.7f, 0.7f), false);
     public final BooleanSetting textShadow = new BooleanSetting("Text Shadow", this, true);
-    public final NumberSetting scale = new NumberSetting("Scale", this, 1, 1, 2, 0.1);
+    public final NumberSetting scale = new NumberSetting("Scale", this, 1, 0.5, 2, 0.1);
     public final ModeSetting fontSetting = new ModeSetting("Font", this, "Minecraft", "Minecraft", "Dosis", "Mono");
     public final BooleanSetting hideVanilla = new BooleanSetting("Hide Vanilla Potions", this, true);
     public PotionMod() {
