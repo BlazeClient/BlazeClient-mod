@@ -36,6 +36,7 @@ public class KeystrokesMod extends Mod implements Renderable {
     public final BooleanSetting mouseButtons = new BooleanSetting("Mouse Buttons", this, true);
     public final BooleanSetting spaceBar = new BooleanSetting("Space Bar", this, true);
     public final NumberSetting scale = new NumberSetting("Scale", this, 1, 0.5, 2, 0.1);
+    public final BooleanSetting scaleChange = new BooleanSetting("Press Scale Change", this, false);
     public final NumberSetting fadeTime = new NumberSetting("Fade Time", this, 1, 0, 1000, 1);
     public final ModeSetting fontSetting = new ModeSetting("Font", this, "Minecraft", "Minecraft", "Dosis", "Mono");
     public KeystrokesMod() {

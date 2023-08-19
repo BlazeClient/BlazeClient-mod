@@ -39,7 +39,7 @@ public class KeybindSetting extends Setting implements RenderableSetting {
         ImGui.text(this.name);
 
         if (!isButtonWasPressed) {
-            isButtonWasPressed = ImGui.button(KeyUtils.getKeyName(getKeyCode()));
+            isButtonWasPressed = ImGui.button(" " + KeyUtils.getKeyName(getKeyCode()) + " ");
         } else {
             ImGui.button("Press key...");
             Client.EVENTBUS.subscribe(this);

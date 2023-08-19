@@ -1,5 +1,6 @@
 package me.nobokik.blazeclient.api.helpers;
 
+import imgui.ImFont;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCol;
@@ -59,6 +60,21 @@ public class KeystrokeHelper {
         }
 
         ImVec2 pos = ImGui.getCursorPos();
+        float oldScale = ImGui.getFont().getScale();
+        ImFont newFont = ImGui.getFont();
+
+        float scaleChange;
+
+        if(!pressed) scaleChange = (float) (0.8f + percent * 0.2f);
+        else scaleChange = (float) (1f - percent * 0.2f);
+
+        if(Client.modManager().getMod(KeystrokesMod.class).scaleChange.isEnabled()) {
+            if(!pressed)
+                newFont.setScale(ImGui.getFont().getScale() * scaleChange);
+            else
+                newFont.setScale(ImGui.getFont().getScale() * scaleChange);
+        }
+        ImGui.pushFont(newFont);
         if(Client.modManager().getMod(KeystrokesMod.class).textShadow.isEnabled()) {
             ImGui.setCursorPos(pos.x + 32 * 0.07f, pos.y + 32 * 0.07f);
             ImGui.pushStyleColor(ImGuiCol.Text, textF[0]/2, textF[1]/2, textF[2]/2, textF[3]);
@@ -86,6 +102,8 @@ public class KeystrokeHelper {
         } else {
             ImGui.button(this.display, 50f * Client.modManager().getMod(KeystrokesMod.class).scale.getFValue(), 50f * Client.modManager().getMod(KeystrokesMod.class).scale.getFValue());
         }
+        ImGui.popFont();
+        ImGui.getFont().setScale(oldScale);
         ImGui.popStyleColor(4);
 
 
