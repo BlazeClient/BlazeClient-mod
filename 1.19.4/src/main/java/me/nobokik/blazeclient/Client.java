@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import me.nobokik.blazeclient.api.discord.DiscordClient;
 
 import java.lang.invoke.MethodHandles;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Map;
 
 public final class Client implements ModInitializer {
 	public static String name = "Blaze";
@@ -26,6 +29,9 @@ public final class Client implements ModInitializer {
 	public static MinecraftClient mc = MinecraftClient.getInstance();
 	public static IEventBus EVENTBUS = new EventBus();
 	public static Client INSTANCE;
+
+	public static ArrayList<Map.Entry<String, String>> partneredServers = new ArrayList<>();
+	public static ArrayList<String> starServers = new ArrayList<>();
 	public static final Logger LOGGER = LoggerFactory.getLogger("blaze-client");
 	public static ModManager modManager() {
 		return INSTANCE.modManager;
@@ -60,6 +66,20 @@ public final class Client implements ModInitializer {
 		this.configManager.loadConfig();
 
 		DiscordClient.init();
+		partneredServers.add(new AbstractMap.SimpleEntry<>("as.catpvp.xyz", "CatPvP AS"));
+		partneredServers.add(new AbstractMap.SimpleEntry<>("eu.catpvp.xyz", "CatPvP EU"));
+		partneredServers.add(new AbstractMap.SimpleEntry<>("flakepvp.me", "FlakePvP"));
+
+		starServers.add("au.catpvp.xyz");
+		starServers.add("me.catpvp.xyz");
+		starServers.add("east.catpvp.xyz");
+		starServers.add("west.catpvp.xyz");
+		starServers.add("as.catpvp.xyz");
+		starServers.add("eu.catpvp.xyz");
+
+		starServers.add("play.anarchianetwork.com");
+		starServers.add("tropicalclub.wisteria.host");
+		starServers.add("flakepvp.me");
 	}
 
 	private int tick = 0;

@@ -32,6 +32,7 @@
     "OverlayTextureMixin",
     "PlayerListHudMixin",
     "RenderSystemMixin",
+    "ServerEntryMixin",
     "SplashScreenMixin",
     "TitleScreenMixin",
     "WindowMixin"
