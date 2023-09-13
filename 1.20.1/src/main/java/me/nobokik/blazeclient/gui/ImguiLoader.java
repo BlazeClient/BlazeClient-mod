@@ -9,6 +9,7 @@ import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.main.Main;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -16,6 +17,8 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
+import static me.nobokik.blazeclient.gui.TextureLoader.loadImage;
+import static me.nobokik.blazeclient.gui.TextureLoader.loadTexture;
 import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
@@ -25,6 +28,12 @@ public class ImguiLoader {
 
     private static final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     private static final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+
+    @Getter
+    private static int blazeLogo;
+
+    @Getter
+    private static int blazeText;
 
     @Getter
     private static ImFont monoFont18;
@@ -239,6 +248,23 @@ public class ImguiLoader {
         fontConfig.destroy();
         fontAtlas.build();
 
+        try (InputStream is = ImguiLoader.class.getClassLoader().getResourceAsStream("assets/blaze-client/blazetext.png")) {
+            if (is != null) {
+                BufferedImage image = loadImage(is);
+                blazeText = loadTexture(image);
+            }
+        } catch (IOException ignored) {
+
+        }
+
+        try (InputStream is = ImguiLoader.class.getClassLoader().getResourceAsStream("assets/blaze-client/icon.png")) {
+            if (is != null) {
+                BufferedImage image = loadImage(is);
+                blazeLogo = loadTexture(image);
+            }
+        } catch (IOException ignored) {
+
+        }
 
         if (io.hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
             final ImGuiStyle style = ImGui.getStyle();

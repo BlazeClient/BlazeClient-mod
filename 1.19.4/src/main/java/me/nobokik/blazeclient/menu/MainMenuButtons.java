@@ -19,8 +19,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
 import static me.nobokik.blazeclient.Client.mc;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load;
 
 public class MainMenuButtons implements Renderable {
     private boolean firstFrame = true;
@@ -125,6 +123,12 @@ public class MainMenuButtons implements Renderable {
         ImGui.popStyleColor();
 
         ImGui.end();
+
+        // Client Icon
+        //ImGui.begin(this.getName()+"-Icon", imGuiWindowFlags);
+        //ImGui.setWindowPos(512+50, 512+50);
+        //ImGui.image(getBlazeLogo(), 512, 512);
+        //ImGui.end();
 
         // Sidebar
         ImGui.begin(this.getName()+"-Side", imGuiWindowFlags);

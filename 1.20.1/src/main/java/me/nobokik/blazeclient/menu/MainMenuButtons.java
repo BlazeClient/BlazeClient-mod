@@ -20,7 +20,13 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static me.nobokik.blazeclient.Client.mc;
+import static me.nobokik.blazeclient.gui.TextureLoader.loadImage;
+import static me.nobokik.blazeclient.gui.TextureLoader.loadTexture;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
@@ -127,6 +133,19 @@ public class MainMenuButtons implements Renderable {
         ImGui.popStyleColor();
 
         ImGui.end();
+
+        // Client Icon
+        //ImGui.begin(this.getName()+"-Icon", imGuiWindowFlags);
+        //ImGui.setWindowPos(50, 50);
+        //try (InputStream is = ImguiLoader.class.getClassLoader().getResourceAsStream("assets/blaze-client/icon.png")) {
+        //    if (is != null) {
+        //        BufferedImage image = loadImage(is);
+        //        ImGui.image(loadTexture(image), 256, 256);
+        //    }
+        //} catch (IOException ignored) {
+
+        //}
+        //ImGui.end();
 
         // Sidebar
         ImGui.begin(this.getName()+"-Side", imGuiWindowFlags);
