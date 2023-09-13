@@ -23,10 +23,10 @@ public class MinecraftClientMixin {
     @Shadow
     private static int currentFps;
 
-    @Inject(method = "getWindowTitle", at = @At("HEAD"), cancellable = true)
-    private void getWindowTitle(CallbackInfoReturnable<String> cir) {
-        cir.setReturnValue("Blaze Client " + SharedConstants.getGameVersion().getName());
-    }
+    //@Inject(method = "getWindowTitle", at = @At("HEAD"), cancellable = true)
+    //private void getWindowTitle(CallbackInfoReturnable<String> cir) {
+    //    cir.setReturnValue("Blaze Client " + SharedConstants.getGameVersion().getName());
+    //}
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void onPreTick(CallbackInfo ci) {
