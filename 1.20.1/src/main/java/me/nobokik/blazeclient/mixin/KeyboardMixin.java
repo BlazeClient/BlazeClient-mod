@@ -19,11 +19,16 @@ public class KeyboardMixin {
     private void onKeyPress(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         Client.EVENTBUS.post(KeyPressEvent.get(key, scancode, action, window));
         if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_PRESS && (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible)) {
+            SideMenu.getInstance().selectedWindow = "Mods";
+            ModSettings.getInstance().isVisible = false;
+            ModMenu.getInstance().isVisible = false;
+            SideMenu.getInstance().isVisible = false;
             FirstMenu.toggle(false);
             ModMenu.toggle(false);
             ModSettings.toggle(false);
             SideMenu.toggle(false);
             SideMenu.toggle(false);
+            SideMenu.getInstance().isVisible = false;
             ci.cancel();
         }
         if(action != GLFW.GLFW_RELEASE & (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible)) ci.cancel();
