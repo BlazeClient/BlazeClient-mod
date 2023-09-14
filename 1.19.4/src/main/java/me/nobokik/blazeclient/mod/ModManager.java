@@ -91,6 +91,8 @@ public class ModManager {
 		addMod(new HitColorMod());
 		addMod(new HitboxMod());
 		addMod(new FreelookMod());
+		addMod(new TimeMod());
+		addMod(new TimeChangerMod());
 	}
 
 	@EventHandler
