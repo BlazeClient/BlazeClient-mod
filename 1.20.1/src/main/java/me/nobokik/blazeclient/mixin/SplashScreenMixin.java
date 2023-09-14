@@ -28,32 +28,20 @@ import static net.minecraft.util.math.ColorHelper.Abgr.withAlpha;
 public abstract class SplashScreenMixin extends Overlay {
     @Shadow
     private long reloadCompleteTime;
-
     @Shadow @Final @Mutable
-    static Identifier LOGO;
-
+    private static int MOJANG_RED;
     @Shadow @Final @Mutable
-    static int MOJANG_RED;
+    private static int MONOCHROME_BLACK;
 
     @Shadow @Final
     private MinecraftClient client;
-
-    @Shadow @Final
-    private boolean reloading;
-
-    @Shadow
-    private long reloadStartTime;
-
-    @Shadow @Final
-    private ResourceReload reload;
-    @Shadow
-    private float progress;
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(DrawContext drawContext, int i, int j, float f, CallbackInfo ci) {
         //LOGO =  new Identifier("blaze-client","icon.png");
         Identifier BG = new Identifier("blaze-client", "waves.png");
         MOJANG_RED = ColorHelper.Argb.getArgb(255, 30, 30, 46);
+        MONOCHROME_BLACK = ColorHelper.Argb.getArgb(255, 30, 30, 46);
         if (this.reloadCompleteTime > 1) {
             this.client.setOverlay(null);
             MainMenuButtons.reloadComplete = true;
