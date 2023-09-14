@@ -70,6 +70,7 @@ public final class Client implements ModInitializer {
 		partneredServers.add(new AbstractMap.SimpleEntry<>("eu.catpvp.xyz", "CatPvP EU"));
 		partneredServers.add(new AbstractMap.SimpleEntry<>("flakepvp.me", "FlakePvP"));
 
+		// Cat PvP
 		starServers.add("au.catpvp.xyz");
 		starServers.add("me.catpvp.xyz");
 		starServers.add("east.catpvp.xyz");
@@ -77,9 +78,24 @@ public final class Client implements ModInitializer {
 		starServers.add("as.catpvp.xyz");
 		starServers.add("eu.catpvp.xyz");
 
+		// Cat PvP but .com
+		starServers.add("au.catpvp.com");
+		starServers.add("me.catpvp.com");
+		starServers.add("east.catpvp.com");
+		starServers.add("west.catpvp.com");
+		starServers.add("as.catpvp.com");
+		starServers.add("eu.catpvp.com");
+
+		// Anarchia
 		starServers.add("play.anarchianetwork.com");
+
+		// Tropical Club
 		starServers.add("tropicalclub.wisteria.host");
+
+		// Flake PvP
 		starServers.add("flakepvp.me");
+		starServers.add("as.flakepvp.net");
+		starServers.add("me.flakepvp.net");
 	}
 
 
