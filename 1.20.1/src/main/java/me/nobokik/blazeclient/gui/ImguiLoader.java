@@ -38,6 +38,8 @@ public class ImguiLoader {
     @Getter
     private static ImFont monoFont18;
     @Getter
+    private static ImFont monoFont20;
+    @Getter
     private static ImFont monoFont24;
     @Getter
     private static ImFont monoFont32;
@@ -170,6 +172,7 @@ public class ImguiLoader {
                 byte[] fontData = is.readAllBytes();
 
                 monoFont18 = fontAtlas.addFontFromMemoryTTF(fontData, 18);
+                monoFont20 = fontAtlas.addFontFromMemoryTTF(fontData, 20);
                 monoFont24 = fontAtlas.addFontFromMemoryTTF(fontData, 24);
                 monoFont32 = fontAtlas.addFontFromMemoryTTF(fontData, 32);
                 monoFont48 = fontAtlas.addFontFromMemoryTTF(fontData, 48);

@@ -1,17 +1,22 @@
 package me.nobokik.blazeclient.mod.mods;
 
+import imgui.ImFont;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiWindowFlags;
 import me.nobokik.blazeclient.Client;
+import me.nobokik.blazeclient.api.font.JColor;
+import me.nobokik.blazeclient.api.helpers.CPSHelper;
 import me.nobokik.blazeclient.gui.ImguiLoader;
 import me.nobokik.blazeclient.gui.Renderable;
+import me.nobokik.blazeclient.gui.UI;
 import me.nobokik.blazeclient.menu.FirstMenu;
 import me.nobokik.blazeclient.menu.ModSettings;
 import me.nobokik.blazeclient.mod.GeneralSettings;
 import me.nobokik.blazeclient.mod.Mod;
 import me.nobokik.blazeclient.mod.setting.settings.BooleanSetting;
+import me.nobokik.blazeclient.mod.setting.settings.ColorSetting;
 import me.nobokik.blazeclient.mod.setting.settings.ModeSetting;
 import me.nobokik.blazeclient.mod.setting.settings.NumberSetting;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -22,9 +27,13 @@ import static me.nobokik.blazeclient.Client.modManager;
 
 public class ArmorMod extends Mod implements Renderable {
     //public final ModeSetting position = new ModeSetting("Position", this, "Hotbar", "Hotbar", "Top Center", "Top", "Bottom");
-    //public final ModeSetting side = new ModeSetting("Side", this, "Left", "Left", "Right");
-    //public final BooleanSetting reversed = new BooleanSetting("Side", this, true);
+    public final BooleanSetting showDura = new BooleanSetting("Durability", this, true);
+    public final ModeSetting duraMode = new ModeSetting("Durability Mode", this, "Numbers", "Numbers", "Percentages");
+    public final ModeSetting fontSetting = new ModeSetting("Font", this, "Minecraft", "Minecraft", "Dosis", "Mono");
+    public final ColorSetting textSetting = new ColorSetting("Text Color", this, new JColor(1f, 1f, 1f), false);
+    public final BooleanSetting textShadow = new BooleanSetting("Text Shadow", this, true);
     public final ModeSetting direction = new ModeSetting("Direction", this, "Vertical", "Vertical", "Horizontal");
+
     public boolean firstFrame = true;
     //public ImVec2 position = new ImVec2(82, 200);
     public ArmorMod() {
@@ -92,6 +101,48 @@ public class ArmorMod extends Mod implements Renderable {
         ImGui.popStyleColor(2);
         ImGui.getStyle().setWindowBorderSize(0);
         ImGui.getStyle().setWindowRounding(4f);
+
+        if(showDura.isEnabled() && mc.player != null && direction.is("Vertical")) {
+            ImFont font = ImguiLoader.getMonoFont18();
+            if(fontSetting.is("Minecraft")) {
+                font = ImguiLoader.getMcFont18();
+            } else if (fontSetting.is("Dosis")) {
+                font = ImguiLoader.getDosisFont18();
+            } else if (fontSetting.is("Mono")) {
+                font = ImguiLoader.getMonoFont18();
+            }
+            for (int i = 0; i < 4; i++) {
+                String text = mc.player.getInventory().armor.get(3 - i).getDamage() != 0 ?
+
+                        (duraMode.getMode().equals("Numbers") ?
+                                mc.player.getInventory().armor.get(3 - i).getMaxDamage() - mc.player.getInventory().armor.get(3 - i).getDamage() + "" :
+                                (100 - (mc.player.getInventory().armor.get(3 - i).getMaxDamage() / 100 * mc.player.getInventory().armor.get(3 - i).getDamage())) + "%")
+
+                        : " ";
+
+                c = textSetting.getColor().getFloatColor();
+
+                ImGui.pushStyleColor(ImGuiCol.Text, c[0], c[1], c[2], c[3]);
+                ImGui.pushFont(font);
+                float oldScale = ImGui.getFont().getScale();
+                ImGui.getFont().setScale(oldScale * mc.options.getGuiScale().getValue());
+
+                float windowWidth = 22 * mc.options.getGuiScale().getValue();
+                float windowHeight = 22 * mc.options.getGuiScale().getValue();
+                float textWidth = ImGui.calcTextSize(text).x;
+                float textHeight = ImGui.calcTextSize(text).y;
+
+                ImGui.setCursorPos((windowWidth - textWidth) * 0.5f, (16 * mc.options.getGuiScale().getValue()) + (i * 16 * mc.options.getGuiScale().getValue() - ((windowHeight - textHeight) * 0.5f)));
+
+                if (textShadow.isEnabled()) UI.shadowText(text, 32, c[0], c[1], c[2], c[3]);
+                else ImGui.text(text);
+                ImGui.getFont().setScale(oldScale);
+                ImGui.popFont();
+                ImGui.popStyleColor(1);
+            }
+        }
+
+
         isFocused = ImGui.isWindowFocused();
 
         if(FirstMenu.getInstance().isVisible) {
