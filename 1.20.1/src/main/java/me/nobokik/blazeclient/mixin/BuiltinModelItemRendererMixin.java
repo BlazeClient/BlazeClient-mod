@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BuiltinModelItemRenderer.class)
 public abstract class BuiltinModelItemRendererMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/ShieldEntityModel;getHandle()Lnet/minecraft/client/model/ModelPart;"))
-    public void axolotlclient$lowShield(ItemStack itemStack, ModelTransformationMode mode, MatrixStack matrixStack,
-                                        VertexConsumerProvider vertexConsumerProvider, int i, int j, CallbackInfo ci) {
+    public void lowShield(ItemStack itemStack, ModelTransformationMode mode, MatrixStack matrixStack,
+                          VertexConsumerProvider vertexConsumerProvider, int i, int j, CallbackInfo ci) {
         if (Client.modManager().getMod(GeneralSettings.class).lowShield.isEnabled()
                 && MinecraftClient.getInstance().options.getPerspective().isFirstPerson()
                 && (mode.equals(ModelTransformationMode.FIRST_PERSON_LEFT_HAND)
