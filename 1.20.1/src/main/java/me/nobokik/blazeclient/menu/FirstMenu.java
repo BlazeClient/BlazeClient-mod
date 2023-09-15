@@ -115,6 +115,7 @@ public class FirstMenu implements Renderable {
         ImGui.popStyleColor(4);
         ImGui.popFont();
         ImGui.end();
+        ImGui.getStyle().setWindowBorderSize(1);
     }
 
 }
