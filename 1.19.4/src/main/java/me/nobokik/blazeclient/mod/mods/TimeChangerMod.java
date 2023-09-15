@@ -11,10 +11,7 @@ public class TimeChangerMod extends Mod {
     }
 
     public int getTimeInt() {
-        if(this.isEnabled()) {
-            if (time.is("Day")) return 0;
-            else return 24000;
-        }
-        return -1;
+        if (time.is("Day")) return 0;
+        else return 24000;
     }
 }

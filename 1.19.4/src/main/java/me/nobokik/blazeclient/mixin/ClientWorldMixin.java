@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class ClientWorldMixin {
     @ModifyArg(method = "setTimeOfDay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld$Properties;setTimeOfDay(J)V"))
     public long timeChanger(long time) {
-        if (Client.modManager().isModEnabled("Time Changer")) {
+        if (Client.modManager().getMod(TimeChangerMod.class).isEnabled()) {
             return Client.modManager().getMod(TimeChangerMod.class).getTimeInt();
         }
         return time;
