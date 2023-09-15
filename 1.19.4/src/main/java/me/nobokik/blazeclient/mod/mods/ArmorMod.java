@@ -24,6 +24,7 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 
 import static me.nobokik.blazeclient.Client.mc;
 import static me.nobokik.blazeclient.Client.modManager;
+import static me.nobokik.blazeclient.api.util.RenderUtils.isRenderable;
 
 public class ArmorMod extends Mod implements Renderable {
     //public final ModeSetting position = new ModeSetting("Position", this, "Hotbar", "Hotbar", "Top Center", "Top", "Bottom");
@@ -51,13 +52,7 @@ public class ArmorMod extends Mod implements Renderable {
             firstFrame = true;
             return;
         }
-        if(mc.player == null && !FirstMenu.getInstance().isVisible) return;
-        if (mc.currentScreen instanceof ChatScreen && !modManager().getMod(GeneralSettings.class).showInChat.isEnabled())
-            return;
-        else if (mc.currentScreen instanceof InventoryScreen && !modManager().getMod(GeneralSettings.class).showInInventory.isEnabled())
-            return;
-        else if(mc.currentScreen != null && !FirstMenu.getInstance().isVisible)
-            return;
+        if(!isRenderable()) return;
 
         int imGuiWindowFlags = 0;
         imGuiWindowFlags |= ImGuiWindowFlags.NoTitleBar;

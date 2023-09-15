@@ -28,6 +28,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
 import static me.nobokik.blazeclient.Client.modManager;
+import static me.nobokik.blazeclient.api.util.RenderUtils.isRenderable;
 
 public class ToggleSneakMod extends Mod implements Renderable {
     private boolean firstFrame = true;
@@ -61,13 +62,7 @@ public class ToggleSneakMod extends Mod implements Renderable {
             firstFrame = true;
             return;
         }
-        if(mc.player == null && !FirstMenu.getInstance().isVisible) return;
-        if (mc.currentScreen instanceof ChatScreen && !modManager().getMod(GeneralSettings.class).showInChat.isEnabled())
-            return;
-        else if (mc.currentScreen instanceof InventoryScreen && !modManager().getMod(GeneralSettings.class).showInInventory.isEnabled())
-            return;
-        else if(mc.currentScreen != null && !FirstMenu.getInstance().isVisible)
-            return;
+        if(!isRenderable()) return;
 
         ImFont font = ImguiLoader.getMonoFont32();
         if(fontSetting.is("Minecraft")) {

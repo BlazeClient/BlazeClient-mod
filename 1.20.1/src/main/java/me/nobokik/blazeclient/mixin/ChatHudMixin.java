@@ -4,15 +4,13 @@ import me.nobokik.blazeclient.Client;
 import me.nobokik.blazeclient.api.hook.ChatHudHook;
 import me.nobokik.blazeclient.api.hook.IChatHudExt;
 import me.nobokik.blazeclient.mod.GeneralSettings;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -31,6 +29,11 @@ public abstract class ChatHudMixin implements IChatHudExt {
     @Shadow
     @Final
     private List<ChatHudLine> messages;
+
+    @Mutable
+    @Shadow
+    @Final
+    private static int MAX_MESSAGES;
 
     @Shadow
     public abstract void reset();
@@ -56,7 +59,6 @@ public abstract class ChatHudMixin implements IChatHudExt {
     private void compactchat$onClear(boolean clearHistory, CallbackInfo ci) {
         this.compactchat$hook.reset();
     }
-
     @Override
     public List<ChatHudLine> compactchat$getMessages() {
         return this.messages;
@@ -70,5 +72,11 @@ public abstract class ChatHudMixin implements IChatHudExt {
     @Override
     public void compactchat$clear() {
         this.clear(false);
+    }
+
+    @Inject(method = "render", at = @At("HEAD"))
+    private void render(DrawContext drawContext, int i, int j, int k, CallbackInfo ci) {
+        if(Client.modManager().getMod(GeneralSettings.class).unlimitedChatHistory.isEnabled()) MAX_MESSAGES = 16384;
+        else MAX_MESSAGES = 100;
     }
 }

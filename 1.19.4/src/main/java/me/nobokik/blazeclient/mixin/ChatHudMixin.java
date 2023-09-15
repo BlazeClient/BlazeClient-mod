@@ -7,12 +7,10 @@ import me.nobokik.blazeclient.mod.GeneralSettings;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -26,6 +24,11 @@ public class ChatHudMixin implements IChatHudExt {
     @Shadow
     @Final
     private List<ChatHudLine> messages;
+
+    @Mutable
+    @Shadow
+    @Final
+    private static int MAX_MESSAGES;
 
     @Shadow
     private void refresh() {
@@ -71,4 +74,9 @@ public class ChatHudMixin implements IChatHudExt {
         return original;
     }
 
+    @Inject(method = "render", at = @At("HEAD"))
+    private void render(MatrixStack matrixStack, int i, int j, int k, CallbackInfo ci) {
+        if(Client.modManager().getMod(GeneralSettings.class).unlimitedChatHistory.isEnabled()) MAX_MESSAGES = 16384;
+        else MAX_MESSAGES = 100;
+    }
 }
