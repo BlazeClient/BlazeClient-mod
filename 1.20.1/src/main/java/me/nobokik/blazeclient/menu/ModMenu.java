@@ -136,16 +136,14 @@ public class ModMenu implements Renderable {
         ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.2f, 0.2f, 0.26f, (float) (0.7f * percent));
         ImGui.getStyle().setFrameRounding(20f);
         ImGui.setCursorPos(ImGui.getCursorPosX()+20,ImGui.getCursorPosY()+20);
-        if(ImGui.button("Clear", 80f, 40f))
-            search.clear();
         ImGui.sameLine();
         ImGui.popStyleColor(3);
 
         ImGui.pushStyleColor(ImGuiCol.FrameBg, 0.2f, 0.2f, 0.26f, (float) (0.3f * percent));
         ImGui.pushStyleColor(ImGuiCol.FrameBgHovered, 0.2f, 0.2f, 0.26f, (float) (0.3f * percent));
         ImGui.pushStyleColor(ImGuiCol.FrameBgActive, 0.2f, 0.2f, 0.26f, (float) (0.3f * percent));
-        ImGui.setCursorPos(ImGui.getCursorPosX()+10,ImGui.getCursorPosY());
-        ImGui.setNextItemWidth(499f);
+        ImGui.setCursorPos(ImGui.getCursorPosX()+10,ImGui.getCursorPosY()+20);
+        ImGui.setNextItemWidth(607f);
         ImGui.getStyle().setFramePadding(4f,4f);
         boolean input = ImGui.inputTextWithHint("##", " \uF002 Search mods...", search);
         ImGui.getStyle().setFrameRounding(4f);

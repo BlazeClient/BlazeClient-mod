@@ -26,8 +26,8 @@ public class ImguiLoader {
     private static final Set<Renderable> renderstack = new HashSet<>();
     private static final Set<Renderable> toRemove = new HashSet<>();
 
-    private static final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-    private static final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+    public static final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    public static final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
 
     @Getter
     private static int blazeLogo;

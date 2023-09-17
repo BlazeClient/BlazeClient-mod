@@ -13,11 +13,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+
+import static me.nobokik.blazeclient.gui.ImguiLoader.imGuiGlfw;
+
 @Mixin(Keyboard.class)
 public class KeyboardMixin {
     @Inject(method = "onKey", at = @At("HEAD"), cancellable = true)
     private void onKeyPress(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
+        imGuiGlfw.keyCallback(window, key, scancode, action, 0);
         Client.EVENTBUS.post(KeyPressEvent.get(key, scancode, action, window));
+
         if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_PRESS && (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible)) {
             SideMenu.getInstance().selectedWindow = "Mods";
             ModSettings.getInstance().isVisible = false;
