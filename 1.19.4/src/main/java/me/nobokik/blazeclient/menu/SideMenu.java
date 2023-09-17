@@ -81,6 +81,8 @@ public class SideMenu implements Renderable {
         renderButton("\uF58D", "Mods", percent);
         ImGui.setCursorPosY(ImGui.getCursorPosY()+5);
         renderButton("\uF013", "General", percent);
+        ImGui.setCursorPosY(ImGui.getCursorPosY()+5);
+        renderButton("\uF0C9", "Profiles", percent);
         ImGui.popStyleColor(2);
         ImGui.end();
         ImGui.getStyle().setWindowPadding(4f,4f);
@@ -109,13 +111,21 @@ public class SideMenu implements Renderable {
             if (ImGui.isMouseClicked(0)) {
                 selectedWindow = name;
                 //System.out.println(selectedWindow);
+                SideMenu.getInstance().isVisible = false;
+                FirstMenu.getInstance().isVisible = false;
+                ModSettings.getInstance().isVisible = false;
+                ModMenu.getInstance().isVisible = false;
+                ProfilesMenu.getInstance().isVisible = false;
                 if(name.equals("Mods")) {
-                    ModSettings.getInstance().isVisible = false;
+                    SideMenu.getInstance().isVisible = true;
                     ModMenu.getInstance().isVisible = true;
                 } else if(name.equals("General")) {
-                    ModMenu.getInstance().isVisible = false;
+                    SideMenu.getInstance().isVisible = true;
                     ModSettings.getInstance().mod = Client.modManager().getMod(GeneralSettings.class);
                     ModSettings.getInstance().isVisible = true;
+                } else if(name.equals("Profiles")) {
+                    SideMenu.getInstance().isVisible = true;
+                    ProfilesMenu.getInstance().isVisible = true;
                 }
             }
         }

@@ -6,6 +6,8 @@ import me.nobokik.blazeclient.api.event.orbit.EventHandler;
 import me.nobokik.blazeclient.api.helpers.KeystrokeHelper;
 import me.nobokik.blazeclient.menu.FirstMenu;
 import me.nobokik.blazeclient.menu.ModMenu;
+import me.nobokik.blazeclient.menu.ModSettings;
+import me.nobokik.blazeclient.menu.SideMenu;
 import me.nobokik.blazeclient.mod.mods.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -124,8 +126,8 @@ public class ModManager {
 		}
 
 		if (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), Client.modManager().getMod(GeneralSettings.class).openMenu.getKeyCode())) {
-			if(ModMenu.getInstance().isVisible) ModMenu.getInstance().isVisible = false;
-			else FirstMenu.toggle(!FirstMenu.getInstance().isVisible);
+			if(!ModSettings.getInstance().isVisible && !SideMenu.getInstance().isVisible)
+				FirstMenu.toggle(!FirstMenu.getInstance().isVisible);
 		}
 
 

@@ -66,12 +66,12 @@ public class ModMenu implements Renderable {
     public void render() {
         if(!isVisible) {
             firstFrame = true;
-            if(!SideMenu.getInstance().selectedWindow.equals("General")) SideMenu.getInstance().isVisible = false;
             return;
         }
         SideMenu.getInstance().isVisible = true;
         FirstMenu.getInstance().isVisible = false;
         ModSettings.getInstance().isVisible = false;
+        ProfilesMenu.getInstance().isVisible = false;
         //SideMenu.getInstance().selectedWindow = "Mods";
         if(firstFrame) {
             firstFrame = false;

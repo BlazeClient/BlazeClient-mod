@@ -8,16 +8,17 @@ import me.nobokik.blazeclient.Client;
 import me.nobokik.blazeclient.api.font.JColor;
 import me.nobokik.blazeclient.mod.Mod;
 import me.nobokik.blazeclient.mod.mods.CrosshairMod;
+import me.nobokik.blazeclient.mod.mods.KeystrokesMod;
 import me.nobokik.blazeclient.mod.setting.Setting;
 import me.nobokik.blazeclient.mod.setting.settings.*;
 import net.fabricmc.loader.api.FabricLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class ConfigManager {
     private final Gson GSON = new Gson();
@@ -31,6 +32,10 @@ public class ConfigManager {
     }
 
     public void loadConfig() {
+        loadConfigFromPath(pathConfig);
+    }
+
+    public void loadConfigFromPath(Path pathConfig) {
         try {
             if (!Files.isRegularFile(pathConfig))
                 return;
@@ -47,8 +52,10 @@ public class ConfigManager {
                 if (enabledJson == null || !enabledJson.isJsonPrimitive())
                     continue;
 
-                if (enabledJson.getAsBoolean())
+                if (enabledJson.getAsBoolean()) {
                     mod.enable();
+                } else
+                    mod.disable();
 
                 for (Setting setting : mod.settings) {
                     JsonElement settingJson = moduleConfig.get(setting.name);
@@ -79,7 +86,6 @@ public class ConfigManager {
                 mod.position.x = positionXJson.getAsFloat();
                 mod.position.y = positionYJson.getAsFloat();
 
-
                 if(mod.getName().equals("Crosshair")) {
                     CrosshairMod crosshairMod = (CrosshairMod) mod;
                     JsonElement rowsElement = moduleConfig.get("crosshair");
@@ -103,6 +109,10 @@ public class ConfigManager {
     }
 
     public void saveConfig() {
+        saveConfigFromPath(pathConfig, "Default");
+    }
+
+    public void saveConfigFromPath(Path pathConfig, String name) {
         try {
             Files.createDirectories(pathConfigFolder);
             jsonConfig = new JsonObject();
@@ -130,7 +140,7 @@ public class ConfigManager {
                 }
 
                 jsonConfig.add(mod.getName(), moduleConfig);
-
+                jsonConfig.addProperty("name", name);
                 moduleConfig.addProperty("posX", mod.position.x);
                 moduleConfig.addProperty("posY", mod.position.y);
 
@@ -148,5 +158,20 @@ public class ConfigManager {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Map<Path, String> getConfigs() {
+        try {
+            Map<Path, String> paths = new HashMap<>();
+            for (final File fileEntry : pathConfigFolder.toFile().listFiles()) {
+                if (fileEntry.getName().contains("blazeclient-")) {
+                    JsonObject jsonConfig = GSON.fromJson(Files.readString(fileEntry.toPath()), JsonObject.class);
+                    paths.put(fileEntry.toPath(), jsonConfig.get("name").getAsString());
+                }
+            }
+            return paths;
+        } catch(IOException ignored) {
+        }
+        return null;
     }
 }

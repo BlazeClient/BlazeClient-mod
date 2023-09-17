@@ -1,45 +1,38 @@
 package me.nobokik.blazeclient.menu;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCol;
-import imgui.flag.ImGuiInputTextFlags;
-import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiWindowFlags;
-import imgui.gl3.ImGuiImplGl3;
-import imgui.glfw.ImGuiImplGlfw;
 import imgui.type.ImString;
 import me.nobokik.blazeclient.Client;
 import me.nobokik.blazeclient.api.font.JColor;
 import me.nobokik.blazeclient.gui.ImguiLoader;
 import me.nobokik.blazeclient.gui.Renderable;
 import me.nobokik.blazeclient.gui.Theme;
-import me.nobokik.blazeclient.mod.GeneralSettings;
 import me.nobokik.blazeclient.mod.Mod;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundEvents;
+import net.fabricmc.loader.api.FabricLoader;
 
-import static imgui.ImGui.beginChild;
-import static imgui.ImGui.getCursorPosX;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static me.nobokik.blazeclient.Client.mc;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_DELETE;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load;
+import static me.nobokik.blazeclient.Client.nextTick;
 
-public class ModMenu implements Renderable {
+public class ProfilesMenu implements Renderable {
     private boolean firstFrame = true;
     private long openTime = 0;
     public boolean isVisible = false;
     public ImString search = new ImString();
-    private static ModMenu instance;
+    private static ProfilesMenu instance;
     public float scrollY = 0;
 
-    public static ModMenu getInstance() {
+    public static ProfilesMenu getInstance() {
         if (instance == null) {
-            instance = new ModMenu();
+            instance = new ProfilesMenu();
         }
         return instance;
     }
@@ -59,8 +52,9 @@ public class ModMenu implements Renderable {
 
     @Override
     public String getName() {
-        return "ModMenu";
+        return "Profiles";
     }
+    private final Gson GSON = new Gson();
 
     @Override
     public void render() {
@@ -68,11 +62,6 @@ public class ModMenu implements Renderable {
             firstFrame = true;
             return;
         }
-        SideMenu.getInstance().isVisible = true;
-        FirstMenu.getInstance().isVisible = false;
-        ModSettings.getInstance().isVisible = false;
-        ProfilesMenu.getInstance().isVisible = false;
-        //SideMenu.getInstance().selectedWindow = "Mods";
         if(firstFrame) {
             firstFrame = false;
             openTime = System.currentTimeMillis();
@@ -124,28 +113,37 @@ public class ModMenu implements Renderable {
         ImGui.getStyle().setFrameRounding(40f);
 
         ImGui.setCursorPos(ImGui.getCursorPosX()-1, ImGui.getCursorPosY()-1);
-        ImGui.button("Mod Menu", 252f, 82f);
+        ImGui.button("Mod Profiles", 252f, 82f);
         ImGui.getStyle().setFrameRounding(4f);
         ImGui.popFont();
         ImGui.popStyleColor(4);
         ImGui.sameLine();
 
         ImGui.pushFont(ImguiLoader.getDosisFont32());
-        ImGui.pushStyleColor(ImGuiCol.Button, 0.2f, 0.2f, 0.26f, (float) (0.4f * percent));
-        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.2f, 0.2f, 0.26f, (float) (0.65f * percent));
-        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.2f, 0.2f, 0.26f, (float) (0.7f * percent));
+        ImGui.pushStyleColor(ImGuiCol.Button, 0.31f, 0.98f, 0.48f, (float) (0.4f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.31f, 0.98f, 0.48f, (float) (0.65f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.31f, 0.98f, 0.48f, (float) (0.7f * percent));
         ImGui.getStyle().setFrameRounding(20f);
         ImGui.setCursorPos(ImGui.getCursorPosX()+20,ImGui.getCursorPosY()+20);
+        if(ImGui.button(" \uF02E Save ", 120f, 40f)) {
+            if(!search.get().equals("")) {
+                Client.configManager().saveConfigFromPath(
+                        FabricLoader.getInstance().getConfigDir().resolve(
+                                "blazeclient-" + search.get().toLowerCase().replace(" ", "").replace("/", "").replace("\\", "") + ".json"
+                        ), search.get());
+            }
+        }
+
         ImGui.sameLine();
         ImGui.popStyleColor(3);
 
         ImGui.pushStyleColor(ImGuiCol.FrameBg, 0.2f, 0.2f, 0.26f, (float) (0.3f * percent));
         ImGui.pushStyleColor(ImGuiCol.FrameBgHovered, 0.2f, 0.2f, 0.26f, (float) (0.3f * percent));
         ImGui.pushStyleColor(ImGuiCol.FrameBgActive, 0.2f, 0.2f, 0.26f, (float) (0.3f * percent));
-        ImGui.setCursorPos(ImGui.getCursorPosX()+10,ImGui.getCursorPosY()+20);
-        ImGui.setNextItemWidth(607f);
+        ImGui.setCursorPos(ImGui.getCursorPosX()+10,ImGui.getCursorPosY());
+        ImGui.setNextItemWidth(459f);
         ImGui.getStyle().setFramePadding(4f,4f);
-        boolean input = ImGui.inputTextWithHint("##", " \uF002 Search mods...", search);
+        boolean input = ImGui.inputTextWithHint("##", " \uF0C9 Profile name...", search);
         ImGui.getStyle().setFrameRounding(4f);
         ImGui.popFont();
         ImGui.popStyleColor(3);
@@ -154,7 +152,7 @@ public class ModMenu implements Renderable {
         ImGui.getStyle().setWindowPadding(4f,4f);
         ImGui.popStyleColor(1);
 
-        // Mods
+        // Profiles
         ImGui.setNextWindowSize(900f, 500f, 0);
         ImGui.setNextWindowPos((float) mc.getWindow().getWidth() / 2 - 450, (float) mc.getWindow().getHeight() / 2 - 210f);
         ImGui.pushStyleColor(ImGuiCol.Border, 0f,0f,0f,0f);
@@ -177,7 +175,7 @@ public class ModMenu implements Renderable {
         ImGui.pushStyleColor(ImGuiCol.ScrollbarGrabHovered, 0.80f, 0.84f, 0.96f, 0.9f);
         ImGui.pushStyleColor(ImGuiCol.ScrollbarGrabActive, 0.80f, 0.84f, 0.96f, 1.00f);
 
-        ImGui.begin(this.getName() + "-Mods", imGuiWindowFlags);
+        ImGui.begin(this.getName() + "-Profiles", imGuiWindowFlags);
 
         if (scrollY > ImGui.getScrollMaxY()) {
             scrollY = ImGui.getScrollMaxY();
@@ -187,13 +185,12 @@ public class ModMenu implements Renderable {
         ImGui.setScrollY(scrollY);
 
         int i = 1;
-        for (Mod mod : Client.modManager().getMods()) {
-            if(mod.getName().equals("General")) continue;
-            if(search.get() != null && !search.get().equals("") && !mod.getName().toLowerCase().contains(search.get().toLowerCase())) continue;
-            modButton(mod, percent);
+        for (Path path : Client.configManager().getConfigs().keySet()) {
+            //if(search.get() != null && !search.get().equals("") && !Client.configManager().getConfigs().get(path).toLowerCase().contains(search.get().toLowerCase())) continue;
+            profileButton(path, Client.configManager().getConfigs().get(path), percent);
             i++;
-            if (i != 4) ImGui.sameLine();
-            else i = 1;
+            //if (i != 3) ImGui.sameLine();
+            //else i = 1;
         }
 
         ImGui.end();
@@ -204,54 +201,111 @@ public class ModMenu implements Renderable {
         ImGui.popStyleColor(6);
     }
 
-    private static void modButton(Mod mod, double percent) {
-        String text = mod.getName();
-        if(mod.getIcon() != null) text = mod.getIcon() + " " + mod.getName();
-        boolean isEnabled = mod.isEnabled();
-
+    private static void profileButtonOld(Path path, String name, double percent) {
         ImGui.pushFont(ImguiLoader.getDosisFont32());
         ImGui.getStyle().setFramePadding(20f,20f);
-        ImGui.getStyle().setFrameRounding(11f);
-        if(isEnabled) {
-            ImGui.pushStyleColor(ImGuiCol.Button, 0.65f, 0.89f, 0.63f, (float) (0.5f * percent));
-            ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.65f, 0.89f, 0.63f, (float) (0.65f * percent));
-            ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.65f, 0.89f, 0.63f, (float) (0.8f * percent));
-        } else {
-            ImGui.pushStyleColor(ImGuiCol.Button, 0.95f, 0.55f, 0.66f, (float) (0.5f * percent));
-            ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.95f, 0.55f, 0.66f, (float) (0.65f * percent));
-            ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.95f, 0.55f, 0.66f, (float) (0.8f * percent));
-        }
+        ImGui.getStyle().setFrameRounding(22f);
+        ImGui.pushStyleColor(ImGuiCol.Button, 0.95f, 0.55f, 0.66f, (float) (0.5f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.95f, 0.55f, 0.66f, (float) (0.65f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.95f, 0.55f, 0.66f, (float) (0.8f * percent));
         ImVec2 pos = ImGui.getCursorPos();
 
-        boolean bg = ImGui.button("##", 273f, 74f);
+        boolean bg = ImGui.button("##", 819f, 74f);
         if (ImGui.isItemHovered()) {
             if (ImGui.isMouseClicked(0)) {
-                mod.toggle();
-            }
-            if (ImGui.isMouseClicked(1)) {
-                ModSettings.getInstance().mod = mod;
-                ModSettings.getInstance().isVisible = true;
+                Client.configManager().loadConfigFromPath(path);
             }
         }
 
         ImGui.popStyleColor(3);
         ImGui.setCursorPos(pos.x +2, pos.y +2);
 
-        ImGui.getStyle().setFrameRounding(10f);
-        if(isEnabled) {
-            ImGui.pushStyleColor(ImGuiCol.Text, 0.80f, 0.84f, 0.96f, (float) percent);
-        } else {
-            ImGui.pushStyleColor(ImGuiCol.Text, 0.75f, 0.79f, 0.91f, (float) percent);
-        }
+        ImGui.getStyle().setFrameRounding(20f);
+        ImGui.pushStyleColor(ImGuiCol.Text, 0.75f, 0.79f, 0.91f, (float) percent);
         ImGui.pushStyleColor(ImGuiCol.Button, 0.08f, 0.08f, 0.12f, (float) (0.65f * percent));
         ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.1f, 0.1f, 0.16f, (float) (0.7f * percent));
         ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.11f, 0.11f, 0.17f, (float) (0.8f * percent));
-        ImGui.button(text, 269f, 70f);
+        ImGui.button(name, 817f, 70f);
         pos = ImGui.getCursorPos();
+        ImGui.setCursorPos(pos.x+709, pos.y+30);
+
+        ImGui.button(" \uF1F8 Delete ", 80f, 40f);
+
         ImGui.setCursorPos(pos.x, pos.y - 4);
         ImGui.getStyle().setFramePadding(4f,4f);
         ImGui.getStyle().setFrameRounding(4f);
         ImGui.popStyleColor(4);
+        ImGui.popFont();
+    }
+
+    private static void profileButton(Path path, String name, double percent) {
+        ImGui.pushFont(ImguiLoader.getDosisFont32());
+        ImGui.getStyle().setFramePadding(20f,20f);
+        ImGui.getStyle().setFrameRounding(37f);
+        ImGui.pushStyleColor(ImGuiCol.Button, 0.2f, 0.2f, 0.26f, (float) (0.4f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.2f, 0.2f, 0.26f, (float) (0.4f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.2f, 0.2f, 0.26f, (float) (0.4f * percent));
+        ImVec2 originalPos = ImGui.getCursorPos().clone();
+
+        boolean bg = ImGui.button("##", 859f, 74f);
+        ImVec2 pos = ImGui.getCursorPos().clone();
+
+        ImGui.setCursorPos(originalPos.x+32, originalPos.y+21);
+        ImGui.text(name);
+
+
+        ImGui.pushStyleColor(ImGuiCol.Button, 0.90f, 0.27f, 0.33f, (float) (0.5f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.90f, 0.27f, 0.33f, (float) (0.65f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.90f, 0.27f, 0.33f, (float) (0.8f * percent));
+        ImGui.setCursorPos(originalPos.x+718, originalPos.y+21);
+        ImGui.button("##", 114f, 40f);
+        if (ImGui.isItemHovered()) {
+            if (ImGui.isMouseClicked(0)) {
+                try {
+                    Files.deleteIfExists(path.toAbsolutePath());
+                } catch (IOException ignored) {}
+            }
+        }
+        ImGui.setCursorPos(originalPos.x+718+10, originalPos.y+25);
+        ImGui.text(("\uF1F8 Delete"));
+        ImGui.popStyleColor(3);
+
+        ImGui.pushStyleColor(ImGuiCol.Button, 0.54f, 0.66f, 0.93f, (float) (0.5f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.54f, 0.66f, 0.93f, (float) (0.65f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.54f, 0.66f, 0.93f, (float) (0.8f * percent));
+        ImGui.setCursorPos(originalPos.x+718-98-10, originalPos.y+21);
+        ImGui.button("##", 98f, 40f);
+        if (ImGui.isItemHovered()) {
+            if (ImGui.isMouseClicked(0)) {
+                for (Mod mod : Client.modManager().mods) {
+                    mod.disable();
+                }
+                nextTick = path;
+                //Client.configManager().loadConfigFromPath(path);
+            }
+        }
+        ImGui.setCursorPos(originalPos.x+718-98-10+10, originalPos.y+25);
+        ImGui.text("\uF019 Load");
+        ImGui.popStyleColor(3);
+
+        ImGui.pushStyleColor(ImGuiCol.Button, 0.31f, 0.98f, 0.48f, (float) (0.4f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonHovered, 0.31f, 0.98f, 0.48f, (float) (0.65f * percent));
+        ImGui.pushStyleColor(ImGuiCol.ButtonActive, 0.31f, 0.98f, 0.48f, (float) (0.7f * percent));
+        ImGui.setCursorPos(originalPos.x+718-98-107-10-10, originalPos.y+21);
+        ImGui.button("##", 107f, 40f);
+        if (ImGui.isItemHovered()) {
+            if (ImGui.isMouseClicked(0)) {
+                Client.configManager().saveConfigFromPath(path, name);
+            }
+        }
+        ImGui.setCursorPos(originalPos.x+718-98-107-10-10+20, originalPos.y+25);
+        ImGui.text("\uF02E Save");
+        ImGui.popStyleColor(3);
+
+        ImGui.popStyleColor(3);
+        ImGui.setCursorPos(pos.x, pos.y - 4);
+        ImGui.getStyle().setFramePadding(4f,4f);
+        ImGui.getStyle().setFrameRounding(4f);
         ImGui.popFont();
     }
 

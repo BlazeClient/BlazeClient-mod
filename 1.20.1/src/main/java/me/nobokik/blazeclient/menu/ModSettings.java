@@ -62,6 +62,9 @@ public class ModSettings implements Renderable {
             firstFrame = true;
             return;
         }
+        if(!SideMenu.getInstance().selectedWindow.equals("General")) {
+            SideMenu.getInstance().isVisible = false;
+        }
         if(firstFrame) {
             firstFrame = false;
             openTime = System.currentTimeMillis();

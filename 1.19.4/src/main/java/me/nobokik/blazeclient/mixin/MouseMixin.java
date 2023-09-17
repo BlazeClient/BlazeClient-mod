@@ -5,10 +5,7 @@ import me.nobokik.blazeclient.api.event.events.MouseButtonEvent;
 import me.nobokik.blazeclient.api.event.events.MouseMoveEvent;
 import me.nobokik.blazeclient.api.event.events.MouseUpdateEvent;
 import me.nobokik.blazeclient.api.helpers.KeystrokeHelper;
-import me.nobokik.blazeclient.menu.FirstMenu;
-import me.nobokik.blazeclient.menu.ModMenu;
-import me.nobokik.blazeclient.menu.ModSettings;
-import me.nobokik.blazeclient.menu.SideMenu;
+import me.nobokik.blazeclient.menu.*;
 import me.nobokik.blazeclient.mod.mods.ZoomMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -76,6 +73,8 @@ public class MouseMixin {
             ModSettings.getInstance().scrollY -= scrollY;
         } else if (ModMenu.getInstance().isVisible) {
             ModMenu.getInstance().scrollY -= scrollY;
+        } else if (ProfilesMenu.getInstance().isVisible) {
+            ProfilesMenu.getInstance().scrollY -= scrollY;
         }
 
         if (ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible || FirstMenu.getInstance().isVisible || SideMenu.getInstance().isVisible) {

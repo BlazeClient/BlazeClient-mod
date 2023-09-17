@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +30,8 @@ public final class Client implements ModInitializer {
 	public static MinecraftClient mc = MinecraftClient.getInstance();
 	public static IEventBus EVENTBUS = new EventBus();
 	public static Client INSTANCE;
+
+	public static Path nextTick = null;
 
 	public static ArrayList<Map.Entry<String, String>> partneredServers = new ArrayList<>();
 	public static ArrayList<String> starServers = new ArrayList<>();
@@ -63,6 +66,7 @@ public final class Client implements ModInitializer {
 		ModMenu.toggleVisibility();
 		ModSettings.toggleVisibility();
 		SideMenu.toggleVisibility();
+		ProfilesMenu.toggleVisibility();
 		this.configManager.loadConfig();
 
 		DiscordClient.init();
@@ -116,6 +120,13 @@ public final class Client implements ModInitializer {
 			} else {
 				tick = 0;
 				IndicatorHelper.getUsers();
+			}
+		});
+
+		ClientTickEvents.END_CLIENT_TICK.register((client) -> {
+			if(nextTick != null) {
+				Client.configManager().loadConfigFromPath(nextTick);
+				nextTick = null;
 			}
 		});
 	}
