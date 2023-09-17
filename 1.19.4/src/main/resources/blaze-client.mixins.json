@@ -16,6 +16,7 @@
     "ChatHudMixin",
     "ClientBrandRetrieverMixin",
     "ClientPlayerInteractionManagerMixin",
+    "ClientWorldMixin",
     "DrawableHelperMixin",
     "EntityRenderDispatcherAccessor",
     "EntityRenderDispatcherMixin",
