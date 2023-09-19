@@ -18,7 +18,7 @@ public class KeyboardMixin {
     private void onKeyPress(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         imGuiGlfw.keyCallback(window, key, scancode, action, 0);
         Client.EVENTBUS.post(KeyPressEvent.get(key, scancode, action, window));
-        if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_PRESS && (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible || ProfilesMenu.getInstance().isVisible)) {
+        if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_PRESS && (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible || ProfilesMenu.getInstance().isVisible || CosmeticsMenu.getInstance().isVisible)) {
             SideMenu.getInstance().selectedWindow = "Mods";
             ModSettings.getInstance().isVisible = false;
             ModMenu.getInstance().isVisible = true;
@@ -26,10 +26,11 @@ public class KeyboardMixin {
             ModMenu.toggle(false);
             ModSettings.toggle(false);
             ProfilesMenu.toggle(false);
+            CosmeticsMenu.toggle(false);
             SideMenu.toggle(false);
             SideMenu.toggle(false);
             ci.cancel();
         }
-        if(action != GLFW.GLFW_RELEASE & (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible)) ci.cancel();
+        if(action != GLFW.GLFW_RELEASE & (FirstMenu.getInstance().isVisible || ModMenu.getInstance().isVisible || ModSettings.getInstance().isVisible || SideMenu.getInstance().isVisible)) ci.cancel();
     }
 }

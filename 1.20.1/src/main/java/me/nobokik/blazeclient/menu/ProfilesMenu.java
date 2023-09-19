@@ -251,7 +251,7 @@ public class ProfilesMenu implements Renderable {
         ImVec2 pos = ImGui.getCursorPos().clone();
 
         ImGui.setCursorPos(originalPos.x+32, originalPos.y+21);
-        ImGui.text(name);
+        ImGui.text("\uF0C9 " + name);
 
 
         ImGui.pushStyleColor(ImGuiCol.Button, 0.90f, 0.27f, 0.33f, (float) (0.5f * percent));

@@ -83,6 +83,8 @@ public class SideMenu implements Renderable {
         renderButton("\uF013", "General", percent);
         ImGui.setCursorPosY(ImGui.getCursorPosY()+5);
         renderButton("\uF0C9", "Profiles", percent);
+        ImGui.setCursorPosY(ImGui.getCursorPosY()+5);
+        renderButton("\uF553", "Cosmetics", percent);
         ImGui.popStyleColor(2);
         ImGui.end();
         ImGui.getStyle().setWindowPadding(4f,4f);
@@ -116,6 +118,7 @@ public class SideMenu implements Renderable {
                 ModSettings.getInstance().isVisible = false;
                 ModMenu.getInstance().isVisible = false;
                 ProfilesMenu.getInstance().isVisible = false;
+                CosmeticsMenu.getInstance().isVisible = false;
                 if(name.equals("Mods")) {
                     SideMenu.getInstance().isVisible = true;
                     ModMenu.getInstance().isVisible = true;
@@ -126,6 +129,9 @@ public class SideMenu implements Renderable {
                 } else if(name.equals("Profiles")) {
                     SideMenu.getInstance().isVisible = true;
                     ProfilesMenu.getInstance().isVisible = true;
+                } else if(name.equals("Cosmetics")) {
+                    SideMenu.getInstance().isVisible = true;
+                    CosmeticsMenu.getInstance().isVisible = true;
                 }
             }
         }

@@ -6,6 +6,7 @@ import me.nobokik.blazeclient.api.event.events.WorldRenderEvent;
 import me.nobokik.blazeclient.api.event.orbit.EventBus;
 import me.nobokik.blazeclient.api.event.orbit.IEventBus;
 import me.nobokik.blazeclient.api.helpers.CPSHelper;
+import me.nobokik.blazeclient.api.helpers.CapeHelper;
 import me.nobokik.blazeclient.api.helpers.IndicatorHelper;
 import me.nobokik.blazeclient.menu.*;
 import me.nobokik.blazeclient.mod.ModManager;
@@ -22,6 +23,9 @@ import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
+
+import static me.nobokik.blazeclient.api.helpers.CapeHelper.getPlayerCosmetics;
 
 public final class Client implements ModInitializer {
 	public static String name = "Blaze";
@@ -30,6 +34,8 @@ public final class Client implements ModInitializer {
 	public static MinecraftClient mc = MinecraftClient.getInstance();
 	public static IEventBus EVENTBUS = new EventBus();
 	public static Client INSTANCE;
+
+	public static UUID uuid = null;
 
 	public static Path nextTick = null;
 
@@ -67,9 +73,11 @@ public final class Client implements ModInitializer {
 		ModSettings.toggleVisibility();
 		SideMenu.toggleVisibility();
 		ProfilesMenu.toggleVisibility();
+		CosmeticsMenu.toggleVisibility();
 		this.configManager.loadConfig();
 
 		DiscordClient.init();
+		CapeHelper.init();
 		partneredServers.add(new AbstractMap.SimpleEntry<>("as.catpvp.xyz", "CatPvP AS"));
 		partneredServers.add(new AbstractMap.SimpleEntry<>("eu.catpvp.xyz", "CatPvP EU"));
 		partneredServers.add(new AbstractMap.SimpleEntry<>("flakepvp.me", "FlakePvP"));
@@ -127,6 +135,10 @@ public final class Client implements ModInitializer {
 			if(nextTick != null) {
 				Client.configManager().loadConfigFromPath(nextTick);
 				nextTick = null;
+			}
+			if(uuid == null && mc.getSession().getUuidOrNull() != null) {
+				uuid = mc.getSession().getUuidOrNull();
+				getPlayerCosmetics();
 			}
 		});
 	}

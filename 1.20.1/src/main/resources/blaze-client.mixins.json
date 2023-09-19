@@ -30,6 +30,7 @@
     "MinecraftClientMixin",
     "MouseMixin",
     "OverlayTextureMixin",
+    "PlayerListEntryMixin",
     "PlayerListHudMixin",
     "RenderSystemMixin",
     "ServerEntryMixin",
