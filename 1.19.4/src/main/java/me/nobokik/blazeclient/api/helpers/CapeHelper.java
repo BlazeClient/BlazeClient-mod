@@ -23,7 +23,6 @@ public class CapeHelper {
 
     public static String equippedCape = "";
     public static void init() {
-        capes.put("blaze-cape", "Blaze Cape");
         capes.put("blaze-red", "Blaze Red");
         capes.put("pastel-aesthetic", "Pastel Aesthetic");
         capes.put("animated-astelic", "Astelic");
