@@ -2,28 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BlazeClient-mod.iml" filepath="$PROJECT_DIR$/.idea/modules/BlazeClient-mod.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient-mod.1.19.4.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient-mod.1.19.4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient-mod.1.19.4.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient-mod.1.19.4.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient-mod.1.19.4.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient-mod.1.19.4.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/BlazeClient-mod.1.20.1.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/BlazeClient-mod.1.20.1.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/BlazeClient-mod.1.20.1.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/BlazeClient-mod.1.20.1.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/BlazeClient-mod.shared.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/BlazeClient-mod.shared.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/BlazeClient-mod.shared.main.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/BlazeClient-mod.shared.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/BlazeClient-mod.shared.test.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/BlazeClient-mod.shared.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient.1.19.4.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient.1.19.4.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient.1.19.4.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/BlazeClient.1.19.4.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/BlazeClient.shared.main.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/BlazeClient.shared.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/BlazeClient.shared.test.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/BlazeClient.shared.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/IdeaProjects.BlazeClient-mod.1.19.4.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/IdeaProjects.BlazeClient-mod.1.19.4.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/IdeaProjects.BlazeClient-mod.1.20.1.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/IdeaProjects.BlazeClient-mod.1.20.1.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/IdeaProjects.BlazeClient.1.19.4.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/IdeaProjects.BlazeClient.1.19.4.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.test~1.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.test~1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.test~2.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient-mod.1.19.4.test~2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/me.nobokik.blazeclient.BlazeClient-mod.1.20.1.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/me.nobokik.blazeclient.BlazeClient-mod.1.20.1.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient.1.19.4.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.19.4/me.nobokik.blazeclient.BlazeClient.1.19.4.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.2/BlazeClient-mod.1.20.2.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.2/BlazeClient-mod.1.20.2.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.2/BlazeClient-mod.1.20.2.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.2/BlazeClient-mod.1.20.2.test.iml" />
     </modules>
   </component>
 </project>
