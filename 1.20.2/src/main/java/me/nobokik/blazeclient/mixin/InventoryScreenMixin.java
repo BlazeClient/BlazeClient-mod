@@ -20,8 +20,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.image.BufferedImage;
-
 import static me.nobokik.blazeclient.Client.mc;
 
 @Mixin(InventoryScreen.class)
@@ -53,6 +51,8 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
             super.render(drawContext, i, j, f);
             this.recipeBook.drawGhostSlots(drawContext, this.x, this.y, false, f);
         }
+
+        drawContext.drawTexture(new Identifier("blaze-client", "blazetext.png"), 0, mc.getWindow().getScaledHeight() - 32, 0, 0, 167, 28, 167, 28);
 
         this.drawMouseoverTooltip(drawContext, i, j);
         this.recipeBook.drawTooltip(drawContext, this.x, this.y, i, j);

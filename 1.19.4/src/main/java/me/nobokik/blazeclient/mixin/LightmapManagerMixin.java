@@ -9,17 +9,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import javax.swing.text.html.Option;
-
 @Mixin(LightmapTextureManager.class)
 public abstract class LightmapManagerMixin {
-
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;getGamma()Lnet/minecraft/client/option/SimpleOption;"))
-    public SimpleOption<Double> fullBright(GameOptions instance) {
-        if (Client.modManager().getMod(GeneralSettings.class).fullbright.isEnabled())
-            return new SimpleOption<>("options.gamma", SimpleOption.emptyTooltip(), (optionText, value) -> optionText,
-                    SimpleOption.DoubleSliderCallbacks.INSTANCE, 15D, value -> {
-            });
-        return instance.getGamma();
+    public SimpleOption<Double> onUpdate(GameOptions instance) {
+        if (!Client.modManager().getMod(GeneralSettings.class).fullbright.isEnabled()) instance.getGamma();
+        return new SimpleOption<>("options.gamma", SimpleOption.emptyTooltip(), (optionText, value) -> optionText, SimpleOption.DoubleSliderCallbacks.INSTANCE, 15D, value -> {});
     }
 }
