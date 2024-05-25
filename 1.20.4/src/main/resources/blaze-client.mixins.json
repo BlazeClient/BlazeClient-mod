@@ -1,0 +1,41 @@
+{
+  "required": true,
+  "package": "me.nobokik.blazeclient.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "EntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "BuiltinModelItemRendererMixin",
+    "CameraMixin",
+    "ChatHudMixin",
+    "ClientBrandRetrieverMixin",
+    "ClientPlayerInteractionManagerMixin",
+    "ClientWorldMixin",
+    "DrawContextMixin",
+    "EntityRenderDispatcherAccessor",
+    "EntityRenderDispatcherMixin",
+    "EntityRendererMixin",
+    "GameRendererMixin",
+    "InGameHudMixin",
+    "InGameOverlayRendererMixin",
+    "InventoryScreenMixin",
+    "KeyboardMixin",
+    "LightmapManagerMixin",
+    "LivingEntityRendererMixin",
+    "LogoDrawerMixin",
+    "MinecraftClientMixin",
+    "MouseMixin",
+    "OverlayTextureMixin",
+    "PlayerListHudMixin",
+    "RenderSystemMixin",
+    "ServerEntryMixin",
+    "SimpleOptionMixin",
+    "SplashScreenMixin",
+    "TitleScreenMixin",
+    "WindowMixin"
+  ]
+}

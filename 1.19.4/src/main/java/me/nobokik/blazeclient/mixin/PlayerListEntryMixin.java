@@ -2,6 +2,8 @@ package me.nobokik.blazeclient.mixin;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import me.nobokik.blazeclient.Client;
+import me.nobokik.blazeclient.mod.GeneralSettings;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -34,18 +36,20 @@ public final class PlayerListEntryMixin {
 
     @Inject(method = "getCapeTexture", at = @At("TAIL"), cancellable = true)
     private void getCapeTexture(CallbackInfoReturnable<Identifier> cir) {
-        if(profile.getId().equals(uuid)) {
-            if(!equippedCape.equalsIgnoreCase("")) {
-                if (!equippedCape.contains("animated"))
-                    cir.setReturnValue(new Identifier("blaze-client", "cape-" + equippedCape + ".png"));
+        if(Client.modManager().getMod(GeneralSettings.class).showCosmetics.isEnabled()) {
+            if (profile.getId().equals(uuid)) {
+                if (!equippedCape.equalsIgnoreCase("")) {
+                    if (!equippedCape.contains("animated"))
+                        cir.setReturnValue(new Identifier("blaze-client", "cape-" + equippedCape + ".png"));
+                    else
+                        cir.setReturnValue(new Identifier("blaze-client", "cape-" + equippedCape + ".gif"));
+                }
+            } else if (playerCapes.containsKey(profile.getId())) {
+                if (!playerCapes.get(profile.getId()).contains("animated"))
+                    cir.setReturnValue(new Identifier("blaze-client", "cape-" + playerCapes.get(profile.getId()) + ".png"));
                 else
-                    cir.setReturnValue(new Identifier("blaze-client", "cape-" + equippedCape + ".gif"));
+                    cir.setReturnValue(new Identifier("blaze-client", "cape-" + playerCapes.get(profile.getId()) + ".gif"));
             }
-        } else if(playerCapes.containsKey(profile.getId())) {
-            if(!playerCapes.get(profile.getId()).contains("animated"))
-                cir.setReturnValue(new Identifier("blaze-client", "cape-"+playerCapes.get(profile.getId())+".png"));
-            else
-                cir.setReturnValue(new Identifier("blaze-client", "cape-"+playerCapes.get(profile.getId())+".gif"));
         }
     }
 

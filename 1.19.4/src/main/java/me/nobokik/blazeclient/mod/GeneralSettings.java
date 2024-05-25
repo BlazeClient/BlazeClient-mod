@@ -23,6 +23,7 @@ public class GeneralSettings extends Mod {
     public final BooleanSetting fullbright = new BooleanSetting("Fullbright", this, true);
     public final BooleanSetting minimalViewBob = new BooleanSetting("Minimal View Bob", this, false);
     public final BooleanSetting showOwnNametag = new BooleanSetting("Show Own Nametag", this, false);
+    public final BooleanSetting showCosmetics = new BooleanSetting("Show Cosmetics", this, false);
     public final BooleanSetting showClientBadges = new BooleanSetting("Show Client Badges", this, true);
     public final BooleanSetting lowShield = new BooleanSetting("Low Shield", this, false);
     public final BooleanSetting lowFire = new BooleanSetting("Low Fire", this, false);
@@ -70,6 +71,7 @@ public class GeneralSettings extends Mod {
         lowShield.render();
         lowFire.render();
         showClientBadges.render();
+        showCosmetics.render();
         numericalPing.render();
         smallPing.render();
         ImGui.unindent(30f);

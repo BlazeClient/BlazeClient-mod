@@ -3,12 +3,16 @@ package me.nobokik.blazeclient.api.helpers;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import me.nobokik.blazeclient.Client;
+import me.nobokik.blazeclient.mod.GeneralSettings;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
 import static me.nobokik.blazeclient.Client.mc;
@@ -21,7 +25,6 @@ public class CapeHelper {
 
     public static String equippedCape = "";
     public static void init() {
-        capes.put("blaze-cape", "Blaze Cape");
         capes.put("blaze-red", "Blaze Red");
         capes.put("pastel-aesthetic", "Pastel Aesthetic");
         capes.put("animated-astelic", "Astelic");
@@ -32,6 +35,7 @@ public class CapeHelper {
 
     public static void equipCosmetic(String cosmetic) {
         if(mc.player == null) return;
+        if(!Client.modManager().getMod(GeneralSettings.class).showCosmetics.isEnabled()) return;
         try {
             URL url = new URL("http://94.250.250.243:1337/equipCosmetic");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -62,8 +66,9 @@ public class CapeHelper {
     private static final Gson GSON = new Gson();
 
     public static void getPlayerCosmetics() {
+        if(!Client.modManager().getMod(GeneralSettings.class).showCosmetics.isEnabled()) return;
         try {
-            URL url = new URL("http://94.250.250.243:1337/user/"+uuid);
+            URL url = new URL("http://94.250.250.243:1337/user/" + uuid);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -77,19 +82,21 @@ public class CapeHelper {
             JsonObject convertedResponse = new Gson().fromJson(responseBody, JsonObject.class);
             JsonObject cosmetics = convertedResponse.getAsJsonObject("cosmetics");
             Set<Map.Entry<String, JsonElement>> entrySet = cosmetics.entrySet();
-            for(Map.Entry<String,JsonElement> entry : entrySet){
+            for (Map.Entry<String, JsonElement> entry : entrySet) {
                 String s = cosmetics.get(entry.getKey()).toString().replace("\"", "");
                 System.out.println(entry.getKey() + " -> " + s);
-                if(entry.getKey().equalsIgnoreCase("equipped")) {
+                if (entry.getKey().equalsIgnoreCase("equipped")) {
                     equippedCape = s;
-                } if(entry.getKey().equalsIgnoreCase("allUnlocked")) {
+                }
+                if (entry.getKey().equalsIgnoreCase("allUnlocked")) {
                     ownedCapes.clear();
                     ownedCapes.addAll(capes.keySet());
                 } else {
-                    if(!ownedCapes.contains(entry.getKey())) ownedCapes.add(entry.getKey());
+                    if (!ownedCapes.contains(entry.getKey())) ownedCapes.add(entry.getKey());
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public static ArrayList<String> getOwnedCosmetics(UUID uuid) {
@@ -124,6 +131,7 @@ public class CapeHelper {
 
     public static String getEquippedCosmetic(UUID uuid) {
         if(mc.player == null) return "";
+        if(!Client.modManager().getMod(GeneralSettings.class).showCosmetics.isEnabled()) return "";
         try {
             URL url = new URL("http://94.250.250.243:1337/user/"+uuid);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
