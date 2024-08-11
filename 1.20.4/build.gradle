@@ -1,7 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.5-SNAPSHOT'
 	id "com.github.johnrengelman.shadow" version "8.1.1"
-	id "io.freefair.lombok" version "8.0.1"
+	id "io.freefair.lombok" version "8.7.1"
 	id 'me.qoomon.git-versioning' version '6.4.2'
 }
 

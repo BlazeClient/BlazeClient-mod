@@ -186,6 +186,13 @@ public class InGameHudMixin {
 
     @Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
     private void renderScoreboardSidebar(DrawContext drawContext, ScoreboardObjective scoreboardObjective, CallbackInfo ci) {
+        if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() &&
+                Client.modManager().getMod(ScoreboardMod.class).hideScoreboard.isEnabled()) {
+            ci.cancel();
+        }
+    }
+    /*@Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
+    private void renderScoreboardSidebar(DrawContext drawContext, ScoreboardObjective scoreboardObjective, CallbackInfo ci) {
         if (Client.modManager().getMod(ScoreboardMod.class).isEnabled()) {
             ci.cancel();
             if(Client.modManager().getMod(ScoreboardMod.class).hideScoreboard.isEnabled()) return;
@@ -248,7 +255,7 @@ public class InGameHudMixin {
 
         });
     }
-
+*/
     //@Redirect(method = "renderScoreboardSidebar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I", ordinal = 1))
     //private int scoreboard$drawHeadingText(DrawContext context, TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow) {
     //    if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && Client.modManager().getMod(ScoreboardMod.class).textShadow.isEnabled()) {
