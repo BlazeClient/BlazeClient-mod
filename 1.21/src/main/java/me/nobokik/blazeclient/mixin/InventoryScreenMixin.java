@@ -1,0 +1,61 @@
+package me.nobokik.blazeclient.mixin;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import me.nobokik.blazeclient.Client;
+import me.nobokik.blazeclient.mod.GeneralSettings;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
+import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static me.nobokik.blazeclient.Client.mc;
+
+@Mixin(InventoryScreen.class)
+public abstract class InventoryScreenMixin extends AbstractInventoryScreen<PlayerScreenHandler> implements RecipeBookProvider {
+
+    public InventoryScreenMixin(PlayerScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
+        super(screenHandler, playerInventory, text);
+    }
+
+
+    @Shadow @Final
+    private RecipeBookWidget recipeBook;
+    @Shadow
+    private boolean narrow;
+    @Shadow
+    private float mouseX;
+    @Shadow
+    private float mouseY;
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    public void render(DrawContext drawContext, int i, int j, float f, CallbackInfo ci) {
+        ci.cancel();
+        if (this.recipeBook.isOpen() && this.narrow) {
+            this.renderBackground(drawContext, i, j, f);
+            this.recipeBook.render(drawContext, i, j, f);
+        } else {
+            super.render(drawContext, i, j, f);
+            this.recipeBook.render(drawContext, i, j, f);
+            this.recipeBook.drawGhostSlots(drawContext, this.x, this.y, false, f);
+        }
+
+        drawContext.drawTexture(Identifier.of("blaze-client", "blazetext.png"), 0, mc.getWindow().getScaledHeight() - 32, 0, 0, 167, 28, 167, 28);
+
+        this.drawMouseoverTooltip(drawContext, i, j);
+        this.recipeBook.drawTooltip(drawContext, this.x, this.y, i, j);
+        this.mouseX = (float)i;
+        this.mouseY = (float)j;
+    }
+
+}

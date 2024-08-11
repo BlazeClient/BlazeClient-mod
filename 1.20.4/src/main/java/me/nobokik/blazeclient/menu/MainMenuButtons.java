@@ -128,7 +128,7 @@ public class MainMenuButtons implements Renderable {
 
         ImGui.pushFont(ImguiLoader.getDosisFont32());
         ImGui.pushStyleColor(ImGuiCol.Text, 0.80f, 0.84f, 0.96f, (float) (0.5f * percent));
-        ImGui.text("Blaze Client 1.20.1 (" + FabricLoader.getInstance().getModContainer("blaze-client").get().getMetadata().getVersion() + ")");
+        ImGui.text("Blaze Client 1.20.4 (" + FabricLoader.getInstance().getModContainer("blaze-client").get().getMetadata().getVersion() + ")");
         ImGui.popFont();
         ImGui.popStyleColor();
 

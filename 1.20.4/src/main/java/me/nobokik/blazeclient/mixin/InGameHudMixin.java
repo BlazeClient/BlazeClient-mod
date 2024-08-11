@@ -5,12 +5,14 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.nobokik.blazeclient.Client;
 import me.nobokik.blazeclient.api.event.events.HudRenderEvent;
+import me.nobokik.blazeclient.api.util.SidebarEntry;
 import me.nobokik.blazeclient.mod.mods.ArmorMod;
 import me.nobokik.blazeclient.mod.mods.CrosshairMod;
 import me.nobokik.blazeclient.mod.mods.PotionMod;
 import me.nobokik.blazeclient.mod.mods.ScoreboardMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -27,6 +29,7 @@ import net.minecraft.scoreboard.number.StyledNumberFormat;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
@@ -42,10 +45,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static me.nobokik.blazeclient.Client.mc;
@@ -174,11 +174,79 @@ public class InGameHudMixin {
         drawContext.fill(x, y, x + w, y + h, color);
     }
 
+    //@Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
+    //private void renderScoreboardSidebar(DrawContext drawContext, ScoreboardObjective scoreboardObjective, CallbackInfo ci) {
+    //    if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && Client.modManager().getMod(ScoreboardMod.class).hideScoreboard.isEnabled()) {
+    //        ci.cancel();
+    //    }
+    //}
+    @Final
+    @Shadow
+    private static Comparator<ScoreboardEntry> SCOREBOARD_ENTRY_COMPARATOR;
+
     @Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
     private void renderScoreboardSidebar(DrawContext drawContext, ScoreboardObjective scoreboardObjective, CallbackInfo ci) {
-        if (Client.modManager().getMod(ScoreboardMod.class).isEnabled() && Client.modManager().getMod(ScoreboardMod.class).hideScoreboard.isEnabled()) {
+        if (Client.modManager().getMod(ScoreboardMod.class).isEnabled()) {
             ci.cancel();
+            if(Client.modManager().getMod(ScoreboardMod.class).hideScoreboard.isEnabled()) return;
         }
+
+        Scoreboard scoreboard = scoreboardObjective.getScoreboard();
+        NumberFormat numberFormat = scoreboardObjective.getNumberFormatOr(StyledNumberFormat.RED);
+        SidebarEntry[] ScoreboardEntrys = (SidebarEntry[])scoreboard.getScoreboardEntries(scoreboardObjective).stream().filter((scoreboardEntry) -> {
+            return !scoreboardEntry.hidden();
+        }).sorted(SCOREBOARD_ENTRY_COMPARATOR).limit(15L).map((scoreboardEntry) -> {
+            Team team = scoreboard.getScoreHolderTeam(scoreboardEntry.comp_2127());
+            Text text = scoreboardEntry.name();
+            Text text2 = Team.decorateName(team, text);
+            Text text3 = scoreboardEntry.formatted(numberFormat);
+            int i = MinecraftClient.getInstance().textRenderer.getWidth(text3);
+            return new SidebarEntry(text2, text3, i);
+        }).toArray(SidebarEntry[]::new);
+        Text text = scoreboardObjective.getDisplayName();
+        int i = MinecraftClient.getInstance().textRenderer.getWidth(text);
+        int j = i;
+        int k = MinecraftClient.getInstance().textRenderer.getWidth(": ");
+        SidebarEntry[] var10 = ScoreboardEntrys;
+        int var11 = ScoreboardEntrys.length;
+
+        for(int var12 = 0; var12 < var11; ++var12) {
+            SidebarEntry ScoreboardEntry = var10[var12];
+            j = Math.max(j, MinecraftClient.getInstance().textRenderer.getWidth(ScoreboardEntry.name()) + (ScoreboardEntry.scoreWidth() > 0 ? k + ScoreboardEntry.scoreWidth() : 0));
+        }
+
+        int finalJ = j;
+        drawContext.draw(() -> {
+            int length = ScoreboardEntrys.length;
+            Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
+            int l = length * 9;
+            int m = this.scaledHeight / 2 + l / 3;
+            int n = 1;
+            int o = this.scaledWidth - finalJ - 3;
+            int p = this.scaledWidth - 3 + 2;
+            int q = MinecraftClient.getInstance().options.getTextBackgroundColor(0.3F);
+            int r = MinecraftClient.getInstance().options.getTextBackgroundColor(0.4F);
+            Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
+            int s = m - length * 9;
+            int var10001 = o - 2;
+            Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
+            drawContext.fill(var10001, s - 9 - 1, p, s - 1, r);
+            drawContext.fill(o - 2, s - 1, p, m, q);
+            TextRenderer var18 = MinecraftClient.getInstance().textRenderer;
+            int var10003 = o + finalJ / 2 - i / 2;
+            Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
+            drawContext.drawText(var18, text, var10003, s - 9, -1, false);
+
+            for(int t = 0; t < length; ++t) {
+                SidebarEntry ScoreboardEntry = ScoreboardEntrys[t];
+                var10001 = length - t;
+                Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
+                int u = m - var10001 * 9;
+                drawContext.drawText(MinecraftClient.getInstance().textRenderer, ScoreboardEntry.comp_2131, o, u, -1, false);
+                drawContext.drawText(MinecraftClient.getInstance().textRenderer, ScoreboardEntry.comp_2132, p - ScoreboardEntry.comp_2133, u, -1, false);
+            }
+
+        });
     }
 
     //@Redirect(method = "renderScoreboardSidebar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I", ordinal = 1))
